@@ -1,15 +1,11 @@
 #include <WiFi.h>
+#include <BluetoothSerial.h>
 #include "time.h"
-
-const char* ssid       = "Stefan se Seintoring";
-const char* password   = "appels21";
-
-const char* ntpServer = "pool.ntp.org";
-const long  gmtOffset_sec = 7200;
-const int   daylightOffset_sec = 0;
 
 const int ledPin = 2; // LED pin
 bool ledState = LOW;
+
+BluetoothSerial SerialBT;
 
 void printLocalTime()
 {
@@ -29,9 +25,6 @@ void checkAndToggleLED()
     return;
   }
 
-  // Print current time
-  // Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
-
   // Check if 10 seconds before an even minute
   if (timeinfo.tm_sec == 50 && timeinfo.tm_min % 2 != 0) {
     ledState = !ledState; // Toggle LED state
@@ -50,6 +43,8 @@ void setup()
   digitalWrite(ledPin, ledState); // Set initial LED state
 
   // Connect to WiFi
+  const char* ssid       = "Stefan se Seintoring";
+  const char* password   = "appels21";
   Serial.printf("Connecting to %s ", ssid);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
@@ -59,16 +54,36 @@ void setup()
   Serial.println(" CONNECTED");
 
   // Initialize and get the time
+  const char* ntpServer = "pool.ntp.org";
+  const long  gmtOffset_sec = 7200;
+  const int   daylightOffset_sec = 0;
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
   printLocalTime();
 
   // Disconnect WiFi as it's no longer needed
   WiFi.disconnect(true);
   WiFi.mode(WIFI_OFF);
+
+  // Initialize Bluetooth
+  SerialBT.begin("ESP32"); // Bluetooth device name
+  Serial.println("Bluetooth Started. Pair with 'ESP32test'.");
 }
 
 void loop()
 {
   delay(300); // Check every second
   checkAndToggleLED();
+
+  if (SerialBT.available()) {
+    char incomingChar = SerialBT.read();
+    if (incomingChar == '1') {
+      ledState = HIGH;
+      digitalWrite(ledPin, ledState);
+      SerialBT.println("LED turned ON");
+    } else if (incomingChar == '0') {
+      ledState = LOW;
+      digitalWrite(ledPin, ledState);
+      SerialBT.println("LED turned OFF");
+    }
+  }
 }
