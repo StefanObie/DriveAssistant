@@ -66,7 +66,7 @@ void setup()
 
   // Initialize Bluetooth
   SerialBT.begin("ESP32"); // Bluetooth device name
-  Serial.println("Bluetooth Started. Pair with 'ESP32test'.");
+  Serial.println("Bluetooth Started. Pair with 'ESP32'.");
 }
 
 void loop()
