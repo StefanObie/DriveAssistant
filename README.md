@@ -1,7 +1,7 @@
 # Drive Assistant
 
 ## Overview
-
+![Discovery Movement Report](movement_report.png)
 
 
 ## Notes

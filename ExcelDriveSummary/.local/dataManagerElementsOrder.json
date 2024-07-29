@@ -1,0 +1,66 @@
+{
+  "Workflows": [
+    {
+      "Path": null,
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [],
+      "ArgumentsSectionElementsOrder": null,
+      "ConstantsSectionElementsOrder": [],
+      "AddedNamespaces": null
+    },
+    {
+      "Path": "Main.xaml",
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [
+        "sheetname&Sequence_1",
+        "qualifying_spend&Sequence_1",
+        "night_time_drive&Sequence_1",
+        "annual_check&Sequence_1",
+        "claim_free_years&Sequence_1",
+        "driving_profile&Sequence_1"
+      ],
+      "ArgumentsSectionElementsOrder": [],
+      "ConstantsSectionElementsOrder": [],
+      "AddedNamespaces": null
+    },
+    {
+      "Path": "WriteDataToExcel.xaml",
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [],
+      "ArgumentsSectionElementsOrder": [
+        "in_qualifying_spend",
+        "in_annual_check",
+        "in_night_time_drive",
+        "in_claim_free_years",
+        "in_driving_profile",
+        "in_sheetname"
+      ],
+      "ConstantsSectionElementsOrder": [],
+      "AddedNamespaces": null
+    },
+    {
+      "Path": "ExtractVitalityDriveDashboard.xaml",
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [],
+      "ArgumentsSectionElementsOrder": [
+        "out_qualifying_spend",
+        "out_night_time_drive",
+        "out_driving_profile",
+        "out_claim_free_years",
+        "out_annual_check"
+      ],
+      "ConstantsSectionElementsOrder": [],
+      "AddedNamespaces": null
+    },
+    {
+      "Path": "ExtractDQMapper.xaml",
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [
+        "start_of_month_date&Sequence_2"
+      ],
+      "ArgumentsSectionElementsOrder": [],
+      "ConstantsSectionElementsOrder": [],
+      "AddedNamespaces": null
+    }
+  ]
+}
