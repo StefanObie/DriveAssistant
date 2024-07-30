@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="ExtractDQMapper" VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="796.8,2020.8000000000002" sap2010:WorkflowViewState.IdRef="ExtractDQMapper_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="ExtractDQMapper" VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="1183,2103" sap2010:WorkflowViewState.IdRef="ExtractDQMapper_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
       <x:String>System.Activities</x:String>
@@ -101,19 +101,19 @@
       <AssemblyReference>System.Linq.Expressions</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="ExtractDQMapper" sap:VirtualizedContainerService.HintSize="704,1956" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="ExtractDQMapper" sap:VirtualizedContainerService.HintSize="704,2038" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <uix:NApplicationCard AttachMode="ByInstance" DisplayName="Use Browser Chrome: Track your vehicle in real-time with DQ Mapper - Anglo Medical Scheme" sap:VirtualizedContainerService.HintSize="641.6,1867.2" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" InteractionMode="DebuggerApi" ScopeGuid="38961ccd-0e24-443d-bc4e-aba0384a7464" Version="V2">
+    <uix:NApplicationCard AttachMode="ByInstance" DisplayName="Use Browser Edge: Ctrack Online - 0105175057089" sap:VirtualizedContainerService.HintSize="642,1950" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" InteractionMode="DebuggerApi" ScopeGuid="38961ccd-0e24-443d-bc4e-aba0384a7464" Version="V2">
       <uix:NApplicationCard.Body>
         <ActivityAction x:TypeArguments="x:Object">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="608,1627.2" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="608,1710" sap2010:WorkflowViewState.IdRef="Sequence_2">
             <Sequence.Variables>
               <Variable x:TypeArguments="x:String" Name="start_of_month_date" />
             </Sequence.Variables>
@@ -122,11 +122,11 @@
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click 'Access DQ Mapper'" sap:VirtualizedContainerService.HintSize="545.6,225.6" sap2010:WorkflowViewState.IdRef="NClick_1" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="38961ccd-0e24-443d-bc4e-aba0384a7464" Version="V3">
+            <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click 'Access DQ Mapper'" sap:VirtualizedContainerService.HintSize="546,225" sap2010:WorkflowViewState.IdRef="NClick_1" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="38961ccd-0e24-443d-bc4e-aba0384a7464" Version="V3">
               <uix:NClick.Target>
                 <uix:TargetAnchorable BrowserURL="https://www.discovery.co.za/portal/car-and-home-insurance/stay-safe-improve-your-driving" CVScreenId="b924aeb4-7ae0-4042-815f-21e86caa9d5f" CvElementArea="124, 601, 190, 56" CvTextArea="141, 620, 155, 15" CvTextArgument="ACCESS DQ MAPPER" CvType="Button" DesignTimeRectangle="8, 181, 0, 0" DesignTimeScaleFactor="1" ElementType="Text" FullSelectorArgument="&lt;webctrl tag='A' type='button' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='A' type='button' class='btn btn-primary py-1' aaname='Access DQ Mapper' check:innerText='ACCESS DQ MAPPER' /&gt;" Guid="09dac073-73aa-4b42-9dcf-0d043476be9f" InformativeScreenshot="a0f42ab1f786a98f4190352a8947fdf3.png" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Track your vehicle in real-time with DQ Mapper - Anglo Medical Scheme' /&gt;" SearchSteps="FuzzySelector, CV" Version="V4" Visibility="Interactive">
                   <uix:TargetAnchorable.Anchors>
-                    <scg:List x:TypeArguments="uix:ITarget" Capacity="4">
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
                       <uix:Target CVScreenId="b30bbc7b-9c5c-4940-a2bc-86bc5a5e0195" CvElementArea="124, 453, 190, 57" CvTextArea="141, 473, 155, 13" CvTextArgument="ACCESS DQ MAPPER" CvType="Button" DesignTimeRectangle="125, 455, 189, 53" ElementType="Text" FullSelectorArgument="&lt;webctrl tag='A' type='button' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='A' type='button' class='btn btn-primary py-1' aaname='Access DQ Mapper' check:innerText='ACCESS DQ MAPPER' /&gt;" Guid="05c69cb5-74c7-4a51-ba52-02be3aa4b419" SearchSteps="FuzzySelector, CV" />
                     </scg:List>
                   </uix:TargetAnchorable.Anchors>
@@ -143,35 +143,35 @@
                 </uix:VerifyExecutionOptions>
               </uix:NClick.VerifyOptions>
             </uix:NClick>
-            <uix:NApplicationCard AttachMode="ByInstance" DisplayName="Use Browser Chrome: Ctrack Online - 0105175057089" sap:VirtualizedContainerService.HintSize="545.6,848.8" sap2010:WorkflowViewState.IdRef="NApplicationCard_3" InteractionMode="DebuggerApi" ScopeGuid="29ebb4ed-03b2-4f74-9a34-6e20a73fb9c3" Version="V2">
+            <uix:NApplicationCard AttachMode="ByInstance" DisplayName="Use Browser Chrome: Ctrack Online - 0105175057089" sap:VirtualizedContainerService.HintSize="546,893" sap2010:WorkflowViewState.IdRef="NApplicationCard_3" InteractionMode="DebuggerApi" ScopeGuid="29ebb4ed-03b2-4f74-9a34-6e20a73fb9c3" Version="V2">
               <uix:NApplicationCard.Body>
                 <ActivityAction x:TypeArguments="x:Object">
                   <ActivityAction.Argument>
                     <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
                   </ActivityAction.Argument>
-                  <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="512,600" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                  <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="512,604" sap2010:WorkflowViewState.IdRef="Sequence_4">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <uix:NApplicationCard AttachMode="ByInstance" DisplayName="Use Browser Chrome: Reports - Vehicle Trip Summary" sap:VirtualizedContainerService.HintSize="449.6,511.2" sap2010:WorkflowViewState.IdRef="NApplicationCard_4" InteractionMode="DebuggerApi" ScopeGuid="3936ed8f-fd3c-4ca2-9a52-3b9b90aa27c5" Version="V2">
+                    <uix:NApplicationCard AttachMode="ByInstance" DisplayName="Use Browser Chrome: Reports - Vehicle Trip Summary" sap:VirtualizedContainerService.HintSize="450,514" sap2010:WorkflowViewState.IdRef="NApplicationCard_4" InteractionMode="DebuggerApi" ScopeGuid="3936ed8f-fd3c-4ca2-9a52-3b9b90aa27c5" Version="V2">
                       <uix:NApplicationCard.Body>
                         <ActivityAction x:TypeArguments="x:Object">
                           <ActivityAction.Argument>
                             <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
                           </ActivityAction.Argument>
-                          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="416,271.2" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="416,272" sap2010:WorkflowViewState.IdRef="Sequence_5">
                             <sap:WorkflowViewStateService.ViewState>
                               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                               </scg:Dictionary>
                             </sap:WorkflowViewStateService.ViewState>
-                            <uix:NCheck Action="Check" DisplayName="Check/Uncheck 'InputBox'" sap:VirtualizedContainerService.HintSize="353.6,182.4" sap2010:WorkflowViewState.IdRef="NCheck_1" ScopeIdentifier="38961ccd-0e24-443d-bc4e-aba0384a7464" Version="V3">
+                            <uix:NCheck Action="Check" DisplayName="Check/Uncheck 'InputBox'" sap:VirtualizedContainerService.HintSize="354,182" sap2010:WorkflowViewState.IdRef="NCheck_1" ScopeIdentifier="38961ccd-0e24-443d-bc4e-aba0384a7464" Version="V3">
                               <uix:NCheck.Target>
                                 <uix:TargetAnchorable BrowserURL="https://www.dqmapper.co.za/Reports/ReportWindow.aspx?id=125&amp;name=Vehicle%20Trip%20Summary" CVScreenId="f04275c2-c78d-4c88-acb2-2d8965ba562e" CvElementArea="32, 284, 15, 15" CvType="CheckBox" DesignTimeRectangle="33, 336, 12, 16" DesignTimeScaleFactor="1" ElementType="CheckBox" FullSelectorArgument="&lt;webctrl id='RAD_SPLITTER_RadSplitter1' tag='TABLE' /&gt;&lt;webctrl id='RAD_SPLITTER_PANE_EXT_CONTENT_leftPane' tableRow='1' tag='IFRAME' /&gt;&lt;webctrl id='AllVehiclesCheckBox' tag='INPUT' /&gt;" FuzzySelectorArgument="&lt;webctrl id='RAD_SPLITTER_RadSplitter1' tag='TABLE' /&gt;&lt;webctrl id='RAD_SPLITTER_PANE_EXT_CONTENT_leftPane' tag='IFRAME' /&gt;&lt;webctrl id='AllVehiclesCheckBox' tag='INPUT' type='checkbox' class='' aaname='Select all vehicles' /&gt;" Guid="ae662f74-312b-4d4a-87c7-a71e8dd3b885" InformativeScreenshot="c44cdb3d887ec8b062ce3d5e5f11e3df.png" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Reports - Vehicle Trip Summary' /&gt;" SearchSteps="FuzzySelector, CV" Version="V4" Visibility="Interactive">
                                   <uix:TargetAnchorable.Anchors>
-                                    <scg:List x:TypeArguments="uix:ITarget" Capacity="4">
+                                    <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
                                       <uix:Target CVScreenId="f04275c2-c78d-4c88-acb2-2d8965ba562e" CvElementArea="32, 340, 285, 153" CvType="InputBox" DesignTimeRectangle="50, 331, 102, 24" ElementType="Text" FullSelectorArgument="&lt;webctrl id='RAD_SPLITTER_RadSplitter1' tag='TABLE' /&gt;&lt;webctrl id='RAD_SPLITTER_PANE_EXT_CONTENT_leftPane' tableRow='1' tag='IFRAME' /&gt;&lt;webctrl parentid='pnlVehicles' tag='LABEL' /&gt;" FuzzySelectorArgument="&lt;webctrl id='RAD_SPLITTER_RadSplitter1' tag='TABLE' /&gt;&lt;webctrl id='RAD_SPLITTER_PANE_EXT_CONTENT_leftPane' tag='IFRAME' /&gt;&lt;webctrl parentid='pnlVehicles' tag='LABEL' type='' class='' aaname='Select all vehicles' check:innerText='Select all vehicles' /&gt;" Guid="cf0e675f-51c0-4a6e-a153-4f445f340dc4" SearchSteps="FuzzySelector, CV" />
                                     </scg:List>
                                   </uix:TargetAnchorable.Anchors>
@@ -212,11 +212,53 @@
                 <uix:TargetApp Area="1912, -8, 1376, 736" BrowserType="Chrome" IconBase64="iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAGGSURBVDhPbZPPK0RRFMfvP2djoWwsrCwslESiKIoiRWQm8itiFpqUSSKlKdlYvLKkrKQUCTUyTVZHn9N8r/tevnV68879fr/nx7sTrIDPt2e7OT+w6sqIbUz02Pp4t+3P9dt1bctenx7arD/kDG6vak7E4HRnNhfkFD+tZluRGCAkjtcmbXmw4984Ko1Zdlm1erVsreaX69yAJOLdmb5ILo92eZ6uVoc7Y357qjeauAEzn+3N+8wiiSikxsTh0pBdVBbt8S6zwEy46RDyfVb3xdHyyea0FyDHQsVDw1mgcjo3CwON9xfvApKAqXiYYxj4VIh4YV7a03zfjQ9/snXylYUBn5/9oOEZEPKCI0AEkaUCiRmNrgDcaABZC0wrk8MEMq2rG3J8Fc59BBIsSbOxXUBlSBTQN0+XjQbzwPWERKSHRWCsczrCnC/jFwln3FioSGyftqmedljcmRvQLgki7aQYVMYYDhcwGgAq0aZIbJ5KBL+Vo4jEIBoIXE9E+isrEDJzHma/mcgA9lAuwjMAAAAASUVORK5CYII=" InformativeScreenshot="e98cff176735b39e7a61e6e6f6f5d68c.jpg" Selector="&lt;html app='chrome.exe' title='Reports - Vehicle Trip Summary' /&gt;" Title="Reports - Vehicle Trip Summary" Url="https://www.dqmapper.co.za/Reports/ReportWindow.aspx?id=125&amp;name=Vehicle%20Trip%20Summary" />
               </uix:NApplicationCard.TargetApp>
             </uix:NApplicationCard>
+            <uix:NHover DisplayName="Hover 'Reports'" sap2010:WorkflowViewState.IdRef="NHover_1" ScopeIdentifier="38961ccd-0e24-443d-bc4e-aba0384a7464" Version="V3">
+              <uix:NHover.Target>
+                <uix:TargetAnchorable BrowserURL="https://www.dqmapper.co.za/default.aspx" CVScreenId="f0b872c8-56f1-4b5e-9579-0628b1a175f7" CvTextArea="294, 177, 46, 14" CvTextArgument="Reports" CvType="Text" DesignTimeRectangle="295, 175, 44, 17" DesignTimeScaleFactor="1" ElementType="Text" FullSelectorArgument="&lt;webctrl id='RAD_SPLITTER_RadSplitter3' tag='TABLE' /&gt;&lt;webctrl aaname='Reports' class='rmText' tableRow='1' tag='SPAN' /&gt;" FuzzySelectorArgument="&lt;webctrl id='RAD_SPLITTER_RadSplitter3' tag='TABLE' /&gt;&lt;webctrl aaname='Reports' class='rmText' type='' tag='SPAN' check:innerText='Reports' /&gt;" Guid="c7ab9bf6-2930-44dc-a271-3a5655a6ae90" InformativeScreenshot="6d199f9db4a45c1b991cacdc333dfbfe.png" ScopeSelectorArgument="&lt;html app='msedge.exe' title='Ctrack Online - 0105175057089' /&gt;" SearchSteps="FuzzySelector, CV" Version="V4" Visibility="Interactive">
+                  <uix:TargetAnchorable.Anchors>
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="4">
+                      <uix:Target CVScreenId="f0b872c8-56f1-4b5e-9579-0628b1a175f7" CvElementArea="343, 174, 16, 17" CvTextArea="294, 177, 46, 14" CvTextArgument="Reports" CvType="ArrowButton" DesignTimeRectangle="280, 160, 88, 47" FullSelectorArgument="&lt;webctrl id='RAD_SPLITTER_RadSplitter3' tag='TABLE' /&gt;&lt;webctrl css-selector='body&amp;gt;form&amp;gt;div&amp;gt;div&amp;gt;table&amp;gt;tbody&amp;gt;tr&amp;gt;td&amp;gt;div&amp;gt;div&amp;gt;ul&amp;gt;li&amp;gt;span' idx='3' tabindex='0' tableRow='1' tag='SPAN' /&gt;" FuzzySelectorArgument="&lt;webctrl id='RAD_SPLITTER_RadSplitter3' tag='TABLE' /&gt;&lt;webctrl type='' aaname='' tabindex='0' class='rmLink rmRootLink rmExpand rmExpandDown' tag='SPAN' check:innerText='Reports&amp;#xA;Toggle' /&gt;" Guid="cd684402-441b-4ac7-abff-b0450af3f88f" SearchSteps="FuzzySelector, CV" />
+                    </scg:List>
+                  </uix:TargetAnchorable.Anchors>
+                </uix:TargetAnchorable>
+              </uix:NHover.Target>
+              <uix:NHover.VerifyOptions>
+                <uix:VerifyExecutionOptions DisplayName="{x:Null}" Mode="Appears">
+                  <uix:VerifyExecutionOptions.Retry>
+                    <InArgument x:TypeArguments="x:Boolean" />
+                  </uix:VerifyExecutionOptions.Retry>
+                  <uix:VerifyExecutionOptions.Timeout>
+                    <InArgument x:TypeArguments="x:Double" />
+                  </uix:VerifyExecutionOptions.Timeout>
+                </uix:VerifyExecutionOptions>
+              </uix:NHover.VerifyOptions>
+            </uix:NHover>
+            <uix:NTypeInto ActivateBefore="True" ClickBeforeMode="Single" DisplayName="Type Into 'From date'" EmptyFieldMode="SingleLine" sap2010:WorkflowViewState.IdRef="NTypeInto_1" ScopeIdentifier="38961ccd-0e24-443d-bc4e-aba0384a7464" Text="1/1/2024 00:00:00" Version="V3">
+              <uix:NTypeInto.Target>
+                <uix:TargetAnchorable BrowserURL="https://www.dqmapper.co.za/Reports/ReportWindow.aspx?id=125&amp;name=Vehicle%20Trip%20Summary" CVScreenId="d14c0692-48db-421a-a027-915dd14574b9" CvElementArea="35, 398, 284, 29" CvType="InputBox" DesignTimeRectangle="36, 398, 286, 29" DesignTimeScaleFactor="1" ElementType="InputBox" Guid="f7d16b4f-2d91-46c7-a515-9f5e1d848e70" InformativeScreenshot="36d04a2dfbf9d29cb2589eeae4f1dd2e.png" IsResponsive="True" ScopeSelectorArgument="&lt;html app='msedge.exe' title='Reports - Vehicle Trip Summary' /&gt;" SearchSteps="CV" TargetType="ComputerVisionBased" Version="V4" Visibility="Interactive">
+                  <uix:TargetAnchorable.Anchors>
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="4">
+                      <uix:Target CVScreenId="d14c0692-48db-421a-a027-915dd14574b9" CvTextArea="36, 384, 61, 12" CvTextArgument="From date" CvType="Text" DesignTimeRectangle="36, 384, 61, 12" ElementType="Text" Guid="0b269010-355d-454e-9b04-a438eca95bf5" SearchSteps="CV" TargetType="ComputerVisionBased" />
+                    </scg:List>
+                  </uix:TargetAnchorable.Anchors>
+                </uix:TargetAnchorable>
+              </uix:NTypeInto.Target>
+              <uix:NTypeInto.VerifyOptions>
+                <uix:VerifyExecutionTypeIntoOptions DisplayName="{x:Null}" Mode="Appears">
+                  <uix:VerifyExecutionTypeIntoOptions.Retry>
+                    <InArgument x:TypeArguments="x:Boolean" />
+                  </uix:VerifyExecutionTypeIntoOptions.Retry>
+                  <uix:VerifyExecutionTypeIntoOptions.Timeout>
+                    <InArgument x:TypeArguments="x:Double" />
+                  </uix:VerifyExecutionTypeIntoOptions.Timeout>
+                </uix:VerifyExecutionTypeIntoOptions>
+              </uix:NTypeInto.VerifyOptions>
+            </uix:NTypeInto>
           </Sequence>
         </ActivityAction>
       </uix:NApplicationCard.Body>
       <uix:NApplicationCard.TargetApp>
-        <uix:TargetApp Area="1912, -8, 1376, 736" BrowserType="Chrome" IconBase64="iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAIKSURBVDhPbVPPSxZRFJ1aBAW1biNBbVq3KRKhdm0CF0lQ0LvPoJX/gRmDifXNe0/LCBeCm3YShBTxzYw/EkSkRISEQBB0IdEiNIogir7OefNmvtG8cJj749z37r3vTnRQphu9J3Mjt1KjhzInjwnq9DEWaIcLSFcyp57lVpLMqkngY2ZlPTPqReb0U/ifkxPo+yU3ug8JD5CwALQC3gPzNXs5t+ohuSGtkNTpy6mRGIS9kpxa+fx27PapqbjnGOxPpR+XfM+MDDLHJy+N9BwvytZzbZJe9V8ni9Cn9/kII++Yw9wIN19HsFEFrZrgwey59LH3Vis6wqQ2TzeYC6IMwDEeAn+BLyj/PA9JjTIgWuozo71nEdsB/gTuOHMjkB8Vpcpa7uQSvl+BndlEnWMiBf12wLfF/puJdEFfYA5z6wesvI7vnWgm+gL0Xfi2Z+3dM/OJnIa9AfxsujtX/cz4OuUBUKoW0OurOI6PYnEuwv4GbALrwK+ZEbnm52BlCqi1cGCI7JtlZ4nqhP0DZf/GTd2+FW5n4FVDZEkgjKVW5VXQiGMl3Dr0fzO8wHAZ909ePqM/mYtk9X0EOcBwg7zh7vsLjLys+fdgx9UilcL1zJ3qB6G2uvgXjPrQtv30B/5b5VL4RKmT0WImagIJKwWo+zk9ISfQDxc+Jdq5wTJ934AvGT7GAi1IFP0DHZbYsXNGtEcAAAAASUVORK5CYII=" InformativeScreenshot="3adbd6b0e696cdcd63e55f45baf08e62.jpg" Selector="&lt;html app='chrome.exe' title='Track your vehicle in real-time with DQ Mapper - Anglo Medical Scheme' /&gt;" Title="Track your vehicle in real-time with DQ Mapper - Anglo Medical Scheme" Url="https://www.discovery.co.za/portal/car-and-home-insurance/stay-safe-improve-your-driving" />
+        <uix:TargetApp Area="-8, -8, 1382, 736" BrowserType="Edge" IconBase64="iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGGSURBVDhPbZPPK0RRFMfvP2djoWwsrCwslESiKIoiRWQm8itiFpqUSSKlKdlYvLKkrKQUCTUyTVZHn9N8r/tevnV68879fr/nx7sTrIDPt2e7OT+w6sqIbUz02Pp4t+3P9dt1bctenx7arD/kDG6vak7E4HRnNhfkFD+tZluRGCAkjtcmbXmw4984Ko1Zdlm1erVsreaX69yAJOLdmb5ILo92eZ6uVoc7Y357qjeauAEzn+3N+8wiiSikxsTh0pBdVBbt8S6zwEy46RDyfVb3xdHyyea0FyDHQsVDw1mgcjo3CwON9xfvApKAqXiYYxj4VIh4YV7a03zfjQ9/snXylYUBn5/9oOEZEPKCI0AEkaUCiRmNrgDcaABZC0wrk8MEMq2rG3J8Fc59BBIsSbOxXUBlSBTQN0+XjQbzwPWERKSHRWCsczrCnC/jFwln3FioSGyftqmedljcmRvQLgki7aQYVMYYDhcwGgAq0aZIbJ5KBL+Vo4jEIBoIXE9E+isrEDJzHma/mcgA9lAuwjMAAAAASUVORK5CYII=" InformativeScreenshot="15b53aa746ae28b5f5e99160ea9efe87.jpg" Selector="&lt;html app='msedge.exe' title='Ctrack Online - 0105175057089' /&gt;" Title="Track your vehicle in real-time with DQ Mapper - Anglo Medical Scheme" Url="https://www.dqmapper.co.za/default.aspx" />
       </uix:NApplicationCard.TargetApp>
     </uix:NApplicationCard>
   </Sequence>
