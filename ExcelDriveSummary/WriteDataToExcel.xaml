@@ -6,8 +6,9 @@
     <x:Property Name="in_night_time_drive" Type="InArgument(x:String)" />
     <x:Property Name="in_annual_check" Type="InArgument(x:String)" />
     <x:Property Name="in_qualifying_spend" Type="InArgument(x:String)" />
+    <x:Property Name="in_distance" Type="InArgument(x:String)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>848.8,1621.6</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>644,1804</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -47,6 +48,7 @@
       <x:String>GlobalVariablesNamespace</x:String>
       <x:String>GlobalConstantsNamespace</x:String>
       <x:String>System.Reflection</x:String>
+      <x:String>System.Linq.Expressions</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -115,35 +117,36 @@
       <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap:VirtualizedContainerService.HintSize="654.4,1556.8" sap2010:WorkflowViewState.IdRef="Sequence_8">
+  <Sequence sap:VirtualizedContainerService.HintSize="654,1739" sap2010:WorkflowViewState.IdRef="Sequence_8">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ueab:SequenceX DisplayName="Single Excel Process Scope" sap:VirtualizedContainerService.HintSize="592,1468" sap2010:WorkflowViewState.IdRef="SequenceX_1">
+    <ueab:SequenceX DisplayName="Single Excel Process Scope" sap:VirtualizedContainerService.HintSize="592,1651" sap2010:WorkflowViewState.IdRef="SequenceX_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ueab:ExcelApplicationCard Password="{x:Null}" ReadFormatting="{x:Null}" CreateNewFile="False" DisplayName="Use Excel File" sap:VirtualizedContainerService.HintSize="529.6,1356" sap2010:WorkflowViewState.IdRef="ExcelApplicationCard_3" ResizeWindow="None" TemplatePath="TemplateDrive.xlsx" UseTemplate="True" WorkbookPath="TemplateDrive.xlsx">
+      <ueab:ExcelApplicationCard Password="{x:Null}" ReadFormatting="{x:Null}" CreateNewFile="False" DisplayName="Use Excel File" sap:VirtualizedContainerService.HintSize="530,1540" sap2010:WorkflowViewState.IdRef="ExcelApplicationCard_3" ResizeWindow="None" TemplatePath="TemplateDrive.xlsx" UseTemplate="True" WorkbookPath="TemplateDrive.xlsx">
         <ueab:ExcelApplicationCard.Body>
           <ActivityAction x:TypeArguments="ue:IWorkbookQuickHandle">
             <ActivityAction.Argument>
               <DelegateInArgument x:TypeArguments="ue:IWorkbookQuickHandle" Name="Excel" />
             </ActivityAction.Argument>
-            <Sequence DisplayName="Do - Excel" sap:VirtualizedContainerService.HintSize="496,1040" sap2010:WorkflowViewState.IdRef="Sequence_7">
+            <Sequence DisplayName="Do - Excel" sap:VirtualizedContainerService.HintSize="496,1225" sap2010:WorkflowViewState.IdRef="Sequence_7">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <ueab:WriteCellX Cell="[Excel.Sheet(in_sheetname).Cell(&quot;G6&quot;)]" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="433.6,192" sap2010:WorkflowViewState.IdRef="WriteCellX_2" Value="[in_driving_profile]" />
-              <ueab:WriteCellX Cell="[Excel.Sheet(in_sheetname).Cell(&quot;C6&quot;)]" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="433.6,192" sap2010:WorkflowViewState.IdRef="WriteCellX_3" Value="[in_claim_free_years]" />
-              <ueab:WriteCellX Cell="[Excel.Sheet(in_sheetname).Cell(&quot;C7&quot;)]" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="433.6,192" sap2010:WorkflowViewState.IdRef="WriteCellX_4" Value="[in_night_time_drive]" />
-              <ueab:WriteCellX Cell="[Excel.Sheet(in_sheetname).Cell(&quot;C9&quot;)]" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="433.6,192" sap2010:WorkflowViewState.IdRef="WriteCellX_5" Value="[in_annual_check]" />
-              <ueab:WriteCellX Cell="[Excel.Sheet(in_sheetname).Cell(&quot;C13&quot;)]" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="433.6,183.2" sap2010:WorkflowViewState.IdRef="WriteCellX_6" Value="[in_qualifying_spend]" />
+              <ueab:WriteCellX Cell="[Excel.Sheet(in_sheetname).Cell(&quot;G6&quot;)]" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="434,191" sap2010:WorkflowViewState.IdRef="WriteCellX_2" Value="[in_driving_profile]" />
+              <ueab:WriteCellX Cell="[Excel.Sheet(in_sheetname).Cell(&quot;C6&quot;)]" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="434,191" sap2010:WorkflowViewState.IdRef="WriteCellX_3" Value="[in_claim_free_years]" />
+              <ueab:WriteCellX Cell="[Excel.Sheet(in_sheetname).Cell(&quot;C7&quot;)]" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="434,191" sap2010:WorkflowViewState.IdRef="WriteCellX_4" Value="[in_night_time_drive]" />
+              <ueab:WriteCellX Cell="[Excel.Sheet(in_sheetname).Cell(&quot;C9&quot;)]" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="434,191" sap2010:WorkflowViewState.IdRef="WriteCellX_5" Value="[in_annual_check]" />
+              <ueab:WriteCellX Cell="[Excel.Sheet(in_sheetname).Cell(&quot;C13&quot;)]" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="434,191" sap2010:WorkflowViewState.IdRef="WriteCellX_6" Value="[in_qualifying_spend]" />
+              <ueab:WriteCellX Cell="[Excel.Sheet(in_sheetname).Cell(&quot;F6&quot;)]" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="434,182" sap2010:WorkflowViewState.IdRef="WriteCellX_7" Value="[in_distance]" />
             </Sequence>
           </ActivityAction>
         </ueab:ExcelApplicationCard.Body>
