@@ -1,0 +1,33 @@
+{
+  "DisplayName": "Main",
+  "Tooltip": null,
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "in_user",
+      "DisplayName": "in_user",
+      "Category": null,
+      "Tooltip": null,
+      "Placeholder": "Stefan",
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "in_send_email",
+      "DisplayName": "in_send_email",
+      "Category": null,
+      "Tooltip": null,
+      "Placeholder": "True",
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

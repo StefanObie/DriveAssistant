@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="CalculateDistance" this:CalculateDistance.in_file_name="Stefan5Aug" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="CalculateDistance" this:CalculateDistance.in_file_name="StefanTest" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_file_name" Type="InArgument(x:String)" />
     <x:Property Name="out_distance" Type="OutArgument(x:String)" />
@@ -6,7 +6,7 @@
   <VisualBasic.Settings>
     <x:Null />
   </VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>629,500</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>629,729</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CalculateDistance_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -108,7 +108,7 @@
       <AssemblyReference>System.Runtime.Numerics</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="CalculateDistance" sap:VirtualizedContainerService.HintSize="496,379" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="CalculateDistance" sap:VirtualizedContainerService.HintSize="496,664" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="driveData" />
     </Sequence.Variables>
@@ -117,8 +117,9 @@
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
+    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="434,173" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[&quot;Start - CalculateDistance&quot;]" />
     <ui:ReadCsvFile PathResource="{x:Null}" DataTable="[driveData]" Delimitator="Comma" DelimitatorForViewModel="Comma" DisplayName="Read CSV" FilePath="[&quot;C:\Users\steff\Downloads\&quot; + in_file_name + &quot;.csv&quot;]" sap:VirtualizedContainerService.HintSize="434,186" sap2010:WorkflowViewState.IdRef="ReadCsvFile_1" />
-    <Assign sap:VirtualizedContainerService.HintSize="434,105" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign sap:VirtualizedContainerService.HintSize="434,114" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[out_distance]</OutArgument>
       </Assign.To>
@@ -126,5 +127,6 @@
         <InArgument x:TypeArguments="x:String">[driveData.AsEnumerable().Sum(Function(row) Convert.ToDouble(row("Distance"))).ToString]</InArgument>
       </Assign.Value>
     </Assign>
+    <ui:DeleteFileX DisplayName="Delete File" sap:VirtualizedContainerService.HintSize="434,103" sap2010:WorkflowViewState.IdRef="DeleteFileX_1" Path="[&quot;C:\Users\steff\Downloads\&quot; + in_file_name + &quot;.csv&quot;]" />
   </Sequence>
 </Activity>
