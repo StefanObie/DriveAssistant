@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Main" this:Main.in_user="Stefan" this:Main.in_send_email="True" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" this:Main.in_user="Stefan" this:Main.in_send_email="True" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_user" Type="InArgument(x:String)" />
     <x:Property Name="in_send_email" Type="InArgument(x:Boolean)" />
@@ -6,7 +6,7 @@
   <VisualBasic.Settings>
     <x:Null />
   </VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>629,1612</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>848.8,1314.4</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -115,6 +115,10 @@
       <x:String>System.Activities.DurableInstancing</x:String>
       <x:String>System.ComponentModel.Design.Serialization</x:String>
       <x:String>Microsoft.VisualBasic.FileIO</x:String>
+      <x:String>UiPath.UIAutomationNext.Triggers</x:String>
+      <x:String>UiPath.Platform.Triggers</x:String>
+      <x:String>UiPath.Platform.Triggers.Scope</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities.Triggers</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -232,53 +236,68 @@
       <AssemblyReference>UiPath.Workflow</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="546,1099" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="512,1249.6" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="driving_profile" />
       <Variable x:TypeArguments="x:String" Name="claim_free_years" />
       <Variable x:TypeArguments="x:String" Name="annual_check" />
       <Variable x:TypeArguments="x:String" Name="night_time_drive" />
       <Variable x:TypeArguments="x:String" Name="qualifying_spend" />
-      <Variable x:TypeArguments="x:String" Name="filename" />
-      <Variable x:TypeArguments="x:String" Name="distance" />
+      <Variable x:TypeArguments="scg:Dictionary(x:String, x:String)" Name="distance" />
+      <Variable x:TypeArguments="s:String[]" Name="Users">
+        <Variable.Default>
+          <VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="{}{&quot;Derrick&quot;,&quot;Stefan&quot;,&quot;Christiaan&quot;}" />
+        </Variable.Default>
+      </Variable>
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="ExtractVitalityDriveDashboard - Invoke Workflow File (ExtractVitalityDriveDashboard.xaml)" sap:VirtualizedContainerService.HintSize="484,204" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="ExtractVitalityDriveDashboard.xaml">
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="ExtractDQMapper - Invoke Workflow File (ExtractDQMapper.xaml)" sap:VirtualizedContainerService.HintSize="449.6,206.4" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="ExtractDQMapper.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <OutArgument x:TypeArguments="x:String" x:Key="out_annual_check">[annual_check]</OutArgument>
-        <OutArgument x:TypeArguments="x:String" x:Key="out_claim_free_years">[claim_free_years]</OutArgument>
-        <OutArgument x:TypeArguments="x:String" x:Key="out_driving_profile">[driving_profile]</OutArgument>
-        <OutArgument x:TypeArguments="x:String" x:Key="out_night_time_drive">[night_time_drive]</OutArgument>
-        <OutArgument x:TypeArguments="x:String" x:Key="out_qualifying_spend">[qualifying_spend]</OutArgument>
+        <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="out_distances">[distance]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="ExtractDQMapper - Invoke Workflow File (ExtractDQMapper.xaml)" sap:VirtualizedContainerService.HintSize="484,204" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="ExtractDQMapper.xaml">
-      <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="x:String" x:Key="in_file_name">[filename]</InArgument>
-      </ui:InvokeWorkflowFile.Arguments>
-    </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="CalculateDistance - Invoke Workflow File (CalculateDistance.xaml)" sap:VirtualizedContainerService.HintSize="484,204" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="CalculateDistance.xaml">
-      <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="x:String" x:Key="in_file_name">[filename]</InArgument>
-        <OutArgument x:TypeArguments="x:String" x:Key="out_distance">[distance]</OutArgument>
-      </ui:InvokeWorkflowFile.Arguments>
-    </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="WriteDataToExcel - Invoke Workflow File (WriteDataToExcel.xaml)" sap:VirtualizedContainerService.HintSize="462,204" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="WriteDataToExcel.xaml">
-      <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="x:String" x:Key="in_sheetname">[in_user]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_driving_profile">[driving_profile]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_claim_free_years">[claim_free_years]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_night_time_drive">[night_time_drive]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_annual_check">[annual_check]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_qualifying_spend">[qualifying_spend]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_distance">[distance]</InArgument>
-      </ui:InvokeWorkflowFile.Arguments>
-    </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="EmailSummary - Invoke Workflow File (EmailSummary.xaml)" sap:VirtualizedContainerService.HintSize="462,195" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="EmailSummary.xaml">
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each currentUser" sap:VirtualizedContainerService.HintSize="449.6,756.8" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Users]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="x:String">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:String" Name="currentUser" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="416,610.4" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="ExtractVitalityDriveDashboard - Invoke Workflow File (ExtractVitalityDriveDashboard.xaml)" sap:VirtualizedContainerService.HintSize="353.6,206.4" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_16" UnSafe="False" WorkflowFileName="ExtractVitalityDriveDashboard.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <OutArgument x:TypeArguments="x:String" x:Key="out_annual_check">[annual_check]</OutArgument>
+                <OutArgument x:TypeArguments="x:String" x:Key="out_claim_free_years">[claim_free_years]</OutArgument>
+                <OutArgument x:TypeArguments="x:String" x:Key="out_driving_profile">[driving_profile]</OutArgument>
+                <OutArgument x:TypeArguments="x:String" x:Key="out_night_time_drive">[night_time_drive]</OutArgument>
+                <OutArgument x:TypeArguments="x:String" x:Key="out_qualifying_spend">[qualifying_spend]</OutArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+            </ui:InvokeWorkflowFile>
+            <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="WriteDataToExcel - Invoke Workflow File (WriteDataToExcel.xaml)" sap:VirtualizedContainerService.HintSize="353.6,206.4" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_17" UnSafe="False" WorkflowFileName="WriteDataToExcel.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <InArgument x:TypeArguments="x:String" x:Key="in_sheetname">[currentUser]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_driving_profile">[driving_profile]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_claim_free_years">[claim_free_years]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_night_time_drive">[night_time_drive]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_annual_check">[annual_check]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_qualifying_spend">[qualifying_spend]</InArgument>
+                <InArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="in_distance">[distance]</InArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+            </ui:InvokeWorkflowFile>
+            <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" AutoCloseAfter="00:00:00" DisplayName="Message Box" sap:VirtualizedContainerService.HintSize="353.6,108.8" sap2010:WorkflowViewState.IdRef="MessageBox_1" Text="[&quot;Extraction Completed for &quot; + currentUser + &quot;.&quot; + vbNewLine +&#xD;&#xA;&quot;Manually change the logged in user. Press OK to continue.&quot;]" />
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEach.Body>
+    </ui:ForEach>
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="EmailSummary - Invoke Workflow File (EmailSummary.xaml)" sap:VirtualizedContainerService.HintSize="449.6,197.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="EmailSummary.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <scg:Dictionary x:TypeArguments="x:String, Argument" />
       </ui:InvokeWorkflowFile.Arguments>

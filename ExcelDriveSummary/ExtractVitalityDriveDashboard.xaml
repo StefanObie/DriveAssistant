@@ -6,7 +6,7 @@
     <x:Property Name="out_night_time_drive" Type="OutArgument(x:String)" />
     <x:Property Name="out_qualifying_spend" Type="OutArgument(x:String)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>629,2256</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>796.8,2222.4</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -112,26 +112,26 @@
       <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap:VirtualizedContainerService.HintSize="637,2191" sap2010:WorkflowViewState.IdRef="Sequence_3">
+  <Sequence sap:VirtualizedContainerService.HintSize="637.6,2157.6" sap2010:WorkflowViewState.IdRef="Sequence_3">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="575,173" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[&quot;Start - ExtractVitalityDriveDashboard&quot;]" />
-    <uix:NApplicationCard AttachMode="ByInstance" DisplayName="Edge Vitality Drive Dashboard - Anglo Medical" sap:VirtualizedContainerService.HintSize="575,1930" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" InteractionMode="DebuggerApi" ScopeGuid="d440be1f-e90e-4e1c-b568-1fb198e8959b" Version="V2">
+    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="575.2,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[&quot;Start - ExtractVitalityDriveDashboard&quot;]" />
+    <uix:NApplicationCard AttachMode="ByInstance" DisplayName="Edge Vitality Drive Dashboard - Anglo Medical" sap:VirtualizedContainerService.HintSize="575.2,1894.4" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" InteractionMode="DebuggerApi" ScopeGuid="d440be1f-e90e-4e1c-b568-1fb198e8959b" Version="V2">
       <uix:NApplicationCard.Body>
         <ActivityAction x:TypeArguments="x:Object">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Do - Browser" sap:VirtualizedContainerService.HintSize="541,1650" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <Sequence DisplayName="Do - Browser" sap:VirtualizedContainerService.HintSize="541.6,1654.4" sap2010:WorkflowViewState.IdRef="Sequence_2">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <uix:NGetText DisplayName="Get Text 'Driving profile'" sap:VirtualizedContainerService.HintSize="479,189" sap2010:WorkflowViewState.IdRef="NGetText_1" ScopeIdentifier="d440be1f-e90e-4e1c-b568-1fb198e8959b" TextString="[out_driving_profile]" Version="V3">
+            <uix:NGetText DisplayName="Get Text 'Driving profile'" sap:VirtualizedContainerService.HintSize="479.2,189.6" sap2010:WorkflowViewState.IdRef="NGetText_1" ScopeIdentifier="d440be1f-e90e-4e1c-b568-1fb198e8959b" TextString="[out_driving_profile]" Version="V3">
               <uix:NGetText.Target>
                 <uix:TargetAnchorable BrowserURL="https://www.discovery.co.za/portal/car-and-home-insurance/vitality-drive-dashboard" CVScreenId="b6845141-86a9-4ccf-b296-052d1bebe2bd" CvTextArea="300, 479, 76, 16" CvType="AnyWordGroup" DesignTimeRectangle="300, 439, 76, 28" DesignTimeScaleFactor="1" ElementType="Text" FullSelectorArgument="&lt;webctrl id='appIFrameObj' tag='IFRAME' /&gt;&lt;webctrl class='subtitle' parentid='dashboardBean' tag='P' /&gt;" FuzzySelectorArgument="&lt;webctrl id='appIFrameObj' tag='IFRAME' /&gt;&lt;webctrl class='subtitle' parentid='dashboardBean' tag='P' type='' /&gt;" Guid="05686cc5-657a-442a-a73b-e477cc7aff00" InformativeScreenshot="37e5dad2e39ff5cc06b26a20ffb928e3.png" ScopeSelectorArgument="&lt;html app='msedge.exe' title='Vitality Drive Dashboard - Anglo Medical Scheme' /&gt;" SearchSteps="FuzzySelector, CV" Version="V4" Visibility="Interactive">
                   <uix:TargetAnchorable.Anchors>
@@ -142,7 +142,7 @@
                 </uix:TargetAnchorable>
               </uix:NGetText.Target>
             </uix:NGetText>
-            <uix:NGetText DisplayName="Get Text 'Claim-free years'" sap:VirtualizedContainerService.HintSize="479,189" sap2010:WorkflowViewState.IdRef="NGetText_5" ScopeIdentifier="d440be1f-e90e-4e1c-b568-1fb198e8959b" TextString="[out_claim_free_years]" Version="V3">
+            <uix:NGetText DisplayName="Get Text 'Claim-free years'" sap:VirtualizedContainerService.HintSize="479.2,189.6" sap2010:WorkflowViewState.IdRef="NGetText_5" ScopeIdentifier="d440be1f-e90e-4e1c-b568-1fb198e8959b" TextString="[out_claim_free_years]" Version="V3">
               <uix:NGetText.Target>
                 <uix:TargetAnchorable BrowserURL="https://www.discovery.co.za/portal/car-and-home-insurance/vitality-drive-dashboard" CVScreenId="c79e35cb-2769-498f-bb9b-23b33ec90d2d" CvTextArea="581, 479, 67, 16" CvType="AnyWordGroup" DesignTimeRectangle="582, 439, 67, 28" DesignTimeScaleFactor="1" ElementType="Text" FullSelectorArgument="&lt;webctrl id='appIFrameObj' tag='IFRAME' /&gt;&lt;webctrl class='subtitle' idx='2' parentid='dashboardBean' tag='P' /&gt;" FuzzySelectorArgument="&lt;webctrl id='appIFrameObj' tag='IFRAME' /&gt;&lt;webctrl class='subtitle' type='' parentid='dashboardBean' tag='P' /&gt;" Guid="7639cee0-46f7-4531-a992-0a352963a226" InformativeScreenshot="85aa4112b663c36f0ca69c02887b81f3.png" ScopeSelectorArgument="&lt;html app='msedge.exe' title='Vitality Drive Dashboard - Anglo Medical Scheme' /&gt;" SearchSteps="FuzzySelector, CV" Version="V4" Visibility="Interactive">
                   <uix:TargetAnchorable.Anchors>
@@ -153,7 +153,7 @@
                 </uix:TargetAnchorable>
               </uix:NGetText.Target>
             </uix:NGetText>
-            <uix:NGetText DisplayName="Get Text 'Night time'" sap:VirtualizedContainerService.HintSize="479,189" sap2010:WorkflowViewState.IdRef="NGetText_6" ScopeIdentifier="d440be1f-e90e-4e1c-b568-1fb198e8959b" TextString="[out_night_time_drive]" Version="V3">
+            <uix:NGetText DisplayName="Get Text 'Night time'" sap:VirtualizedContainerService.HintSize="479.2,189.6" sap2010:WorkflowViewState.IdRef="NGetText_6" ScopeIdentifier="d440be1f-e90e-4e1c-b568-1fb198e8959b" TextString="[out_night_time_drive]" Version="V3">
               <uix:NGetText.Target>
                 <uix:TargetAnchorable BrowserURL="https://www.discovery.co.za/portal/car-and-home-insurance/vitality-drive-dashboard" CVScreenId="c79e35cb-2769-498f-bb9b-23b33ec90d2d" CvTextArea="854, 479, 67, 16" CvType="AnyWordGroup" DesignTimeRectangle="855, 475, 66, 28" DesignTimeScaleFactor="1" ElementType="Text" FullSelectorArgument="&lt;webctrl id='appIFrameObj' tag='IFRAME' /&gt;&lt;webctrl class='subtitle' idx='3' parentid='dashboardBean' tag='P' /&gt;" FuzzySelectorArgument="&lt;webctrl id='appIFrameObj' tag='IFRAME' /&gt;&lt;webctrl class='subtitle' type='' parentid='dashboardBean' tag='P' /&gt;" Guid="c059cadd-7a5d-4a29-83e7-9172691f68d9" InformativeScreenshot="9da7ff5a026096e1f0d2a6b0fa3f0584.png" ScopeSelectorArgument="&lt;html app='msedge.exe' title='Vitality Drive Dashboard - Anglo Medical Scheme' /&gt;" SearchSteps="FuzzySelector, CV" Version="V4" Visibility="Interactive">
                   <uix:TargetAnchorable.Anchors>
@@ -164,7 +164,7 @@
                 </uix:TargetAnchorable>
               </uix:NGetText.Target>
             </uix:NGetText>
-            <uix:NGetText DisplayName="Get Text 'Annual MultiPoint Check'" sap:VirtualizedContainerService.HintSize="479,189" sap2010:WorkflowViewState.IdRef="NGetText_7" ScopeIdentifier="d440be1f-e90e-4e1c-b568-1fb198e8959b" TextString="[out_annual_check]" Version="V3">
+            <uix:NGetText DisplayName="Get Text 'Annual MultiPoint Check'" sap:VirtualizedContainerService.HintSize="479.2,189.6" sap2010:WorkflowViewState.IdRef="NGetText_7" ScopeIdentifier="d440be1f-e90e-4e1c-b568-1fb198e8959b" TextString="[out_annual_check]" Version="V3">
               <uix:NGetText.Target>
                 <uix:TargetAnchorable BrowserURL="https://www.discovery.co.za/portal/car-and-home-insurance/vitality-drive-dashboard" CVScreenId="1b965ed3-6003-43c1-8795-eaf87fd82831" CvTextArea="322, 636, 54, 13" CvType="AnyWordGroup" DesignTimeRectangle="323, 630, 53, 27" DesignTimeScaleFactor="1" ElementType="Text" FullSelectorArgument="&lt;webctrl id='appIFrameObj' tag='IFRAME' /&gt;&lt;webctrl class='small' parentid='dashboardBean' tag='P' /&gt;" FuzzySelectorArgument="&lt;webctrl id='appIFrameObj' tag='IFRAME' /&gt;&lt;webctrl class='small' parentid='dashboardBean' tag='P' type='' /&gt;" Guid="cdf544ed-266a-477f-9e44-4b52945bfecf" InformativeScreenshot="9a5779edabd9588144fe6292a12fb0d6.png" ScopeSelectorArgument="&lt;html app='msedge.exe' title='Vitality Drive Dashboard - Anglo Medical Scheme' /&gt;" SearchSteps="FuzzySelector, CV" Version="V4" Visibility="Interactive">
                   <uix:TargetAnchorable.Anchors>
@@ -175,8 +175,8 @@
                 </uix:TargetAnchorable>
               </uix:NGetText.Target>
             </uix:NGetText>
-            <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="479,175" sap2010:WorkflowViewState.IdRef="LogMessage_3" Message="[&quot;Driving Profile = &quot; + out_driving_profile + &#xD;&#xA;&quot;\nAnnual Check = &quot; + out_annual_check + &#xD;&#xA;&quot;\nClaim Free Years = &quot; + out_claim_free_years + &#xD;&#xA;&quot;\nNight Time Drive = &quot; + out_night_time_drive]" />
-            <uix:NGetText DisplayName="Get Text 'R2600.06 Qualifying'" sap:VirtualizedContainerService.HintSize="479,189" sap2010:WorkflowViewState.IdRef="NGetText_8" ScopeIdentifier="d440be1f-e90e-4e1c-b568-1fb198e8959b" TextString="[out_qualifying_spend]" Version="V3">
+            <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="479.2,176" sap2010:WorkflowViewState.IdRef="LogMessage_3" Message="[&quot;Driving Profile = &quot; + out_driving_profile + Environment.NewLine +&#xD;&#xA;&quot;Annual Check = &quot; + out_annual_check + Environment.NewLine +&#xD;&#xA;&quot;Claim Free Years = &quot; + out_claim_free_years + Environment.NewLine +&#xD;&#xA;&quot;Night Time Drive = &quot; + out_night_time_drive]" />
+            <uix:NGetText DisplayName="Get Text 'R2600.06 Qualifying'" sap:VirtualizedContainerService.HintSize="479.2,189.6" sap2010:WorkflowViewState.IdRef="NGetText_8" ScopeIdentifier="d440be1f-e90e-4e1c-b568-1fb198e8959b" TextString="[out_qualifying_spend]" Version="V3">
               <uix:NGetText.Target>
                 <uix:TargetAnchorable BrowserURL="https://www.discovery.co.za/portal/car-and-home-insurance/vitality-drive-dashboard" CVScreenId="ec5750b1-e02c-422f-8ea9-70d948f3cd83" CvElementArea="103, 261, 550, 114" CvTextArea="178, 296, 186, 20" CvTextArgument="R* Qualifying spend" CvType="Button" DesignTimeRectangle="179, 449, 206, 30" DesignTimeScaleFactor="1" ElementType="Text" FullSelectorArgument="&lt;webctrl id='appIFrameObj' tag='IFRAME' /&gt;&lt;webctrl parentid='runningman' tag='P' /&gt;" FuzzySelectorArgument="&lt;webctrl id='appIFrameObj' tag='IFRAME' /&gt;&lt;webctrl parentid='runningman' tag='P' type='' class='subtitle font-semibold mb-0' check:text='R* Qualifying spend' /&gt;" Guid="5602c03c-3736-4dae-b3d8-73af75037de1" ImageBase64="" InformativeScreenshot="4f50213eadbc6f3734f36e29c8ca9b1d.png" ScopeSelectorArgument="&lt;html app='msedge.exe' title='Vitality Drive Dashboard - Anglo Medical Scheme' /&gt;" SearchSteps="Selector, FuzzySelector" Version="V4" Visibility="Interactive">
                   <uix:TargetAnchorable.Anchors>

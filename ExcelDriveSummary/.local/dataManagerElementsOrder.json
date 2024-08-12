@@ -12,13 +12,12 @@
       "Path": "Main.xaml",
       "SortBy": 0,
       "VariablesSectionElementsOrder": [
-        "distance&Sequence_1",
-        "filename&Sequence_1",
-        "qualifying_spend&Sequence_1",
-        "night_time_drive&Sequence_1",
-        "annual_check&Sequence_1",
+        "driving_profile&Sequence_1",
         "claim_free_years&Sequence_1",
-        "driving_profile&Sequence_1"
+        "annual_check&Sequence_1",
+        "night_time_drive&Sequence_1",
+        "qualifying_spend&Sequence_1",
+        "distance&Sequence_1"
       ],
       "ArgumentsSectionElementsOrder": [
         "in_user",
@@ -58,7 +57,7 @@
       "AddedNamespaces": null
     },
     {
-      "Path": "ExtractDQMapper.xaml",
+      "Path": "ExtractDQMapper_OldUI.xaml",
       "SortBy": 0,
       "VariablesSectionElementsOrder": [
         "month_start&Sequence_8"
@@ -78,6 +77,34 @@
       "ArgumentsSectionElementsOrder": [
         "out_distance",
         "in_file_name"
+      ],
+      "ConstantsSectionElementsOrder": [],
+      "AddedNamespaces": null
+    },
+    {
+      "Path": "ExtractDQMapper.xaml",
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [],
+      "ArgumentsSectionElementsOrder": [
+        "out_distances"
+      ],
+      "ConstantsSectionElementsOrder": [],
+      "AddedNamespaces": null
+    },
+    {
+      "Path": "EmailSummary.xaml",
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [],
+      "ArgumentsSectionElementsOrder": [],
+      "ConstantsSectionElementsOrder": [],
+      "AddedNamespaces": null
+    },
+    {
+      "Path": "DashboardToExcel.xaml",
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [],
+      "ArgumentsSectionElementsOrder": [
+        "TriggerEventArgs"
       ],
       "ConstantsSectionElementsOrder": [],
       "AddedNamespaces": null
