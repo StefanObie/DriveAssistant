@@ -108,7 +108,7 @@
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <umab:SendMailX Bcc="{x:Null}" Body="{x:Null}" Cc="{x:Null}" HtmlBodyFromText="{x:Null}" ReplyTo="{x:Null}" Account="[Exchange]" DisplayName="Send Email" sap:VirtualizedContainerService.HintSize="433.6,426.4" sap2010:WorkflowViewState.IdRef="SendMailX_1" Importance="Normal" IsDraft="False" MaxBodyDocumentSizeMB="2" Sensitivity="Normal" Subject="Drive Summary" To="stefan.oberholzer@sapconet.co.za" UseDocumentAsBody="False">
+            <umab:SendMailX Bcc="{x:Null}" Body="{x:Null}" Cc="{x:Null}" HtmlBodyFromText="{x:Null}" ReplyTo="{x:Null}" Account="[Exchange]" DisplayName="Send Email" sap:VirtualizedContainerService.HintSize="433.6,426.4" sap2010:WorkflowViewState.IdRef="SendMailX_1" Importance="Normal" MaxBodyDocumentSizeMB="2" Sensitivity="Normal" Subject="Drive Summary" To="stefan.oberholzer@sapconet.co.za" UseDocumentAsBody="False">
               <umab:SendMailX.Files>
                 <scg:List x:TypeArguments="InArgument(x:String)" Capacity="1">
                   <InArgument x:TypeArguments="x:String">DriveSummary.xlsx</InArgument>
@@ -133,6 +133,12 @@
           <Literal x:TypeArguments="x:String" Value="" />
         </InArgument>
       </umab:ExchangeApplicationCard.TenantId>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
     </umab:ExchangeApplicationCard>
   </Sequence>
 </Activity>

@@ -1,11 +1,11 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="ExtractDQMapper" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="ExtractDQMapper" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property Name="out_distances" Type="OutArgument(scg:Dictionary(x:String, x:String))" />
+    <x:Property Name="io_drive_data" Type="InOutArgument(sd:DataTable)" />
   </x:Members>
   <VisualBasic.Settings>
     <x:Null />
   </VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>848.8,1509.6</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>848.8,1582.4</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ExtractDQMapper_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -51,6 +51,9 @@
       <x:String>System.Xml.Serialization</x:String>
       <x:String>UiPath.UIAutomationNext.Models.ExtractData</x:String>
       <x:String>Microsoft.Office.Interop.Word</x:String>
+      <x:String>UiPath.Core.Activities.Orchestrator</x:String>
+      <x:String>UiPath.DataTableUtilities</x:String>
+      <x:String>System.Numerics</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -116,69 +119,67 @@
       <AssemblyReference>System.CodeDom</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic.Forms</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic.Core</AssemblyReference>
+      <AssemblyReference>System.Data.SqlClient</AssemblyReference>
+      <AssemblyReference>System.Linq.Async.Queryable</AssemblyReference>
+      <AssemblyReference>System.Linq.Parallel</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>System.Linq.Queryable</AssemblyReference>
+      <AssemblyReference>UiPath.Workflow</AssemblyReference>
+      <AssemblyReference>System.Runtime.Numerics</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="ExtractDQMapper" sap:VirtualizedContainerService.HintSize="512,1444.8" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="ExtractDQMapper" sap:VirtualizedContainerService.HintSize="512,1517.6" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="449.6,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[&quot;Start - ExtractDQMapper&quot;]" />
-    <Assign sap:VirtualizedContainerService.HintSize="449.6,113.6" sap2010:WorkflowViewState.IdRef="Assign_1">
-      <Assign.To>
-        <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)">[out_distances]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, x:String)">[New Dictionary(Of String, String)]</InArgument>
-      </Assign.Value>
-    </Assign>
-    <uix:NApplicationCard AttachMode="ByInstance" DisplayName="Use Browser Edge: Index - Ctrack" sap:VirtualizedContainerService.HintSize="449.6,1068" sap2010:WorkflowViewState.IdRef="NApplicationCard_12" InteractionMode="DebuggerApi" ScopeGuid="c1eebca8-1e3d-4d6d-a556-93b855dc3460" Version="V2">
+    <uix:NApplicationCard AttachMode="ByInstance" DisplayName="Use Browser Edge: Index - Ctrack" sap:VirtualizedContainerService.HintSize="449.6,900.8" sap2010:WorkflowViewState.IdRef="NApplicationCard_12" InteractionMode="DebuggerApi" ScopeGuid="c1eebca8-1e3d-4d6d-a556-93b855dc3460" Version="V2">
       <uix:NApplicationCard.Body>
         <ActivityAction x:TypeArguments="x:Object">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="416,828" sap2010:WorkflowViewState.IdRef="Sequence_17">
+          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="416,652" sap2010:WorkflowViewState.IdRef="Sequence_17">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <uix:NGetText DisplayName="Get Text 'JB 61 HF GP'" sap:VirtualizedContainerService.HintSize="353.6,189.6" sap2010:WorkflowViewState.IdRef="NGetText_1" ScopeIdentifier="c1eebca8-1e3d-4d6d-a556-93b855dc3460" TextString="[out_distances(&quot;Stefan&quot;)]" Version="V3">
+            <uix:NGetText DisplayName="Get Text 'JB 61 HF GP'" sap:VirtualizedContainerService.HintSize="353.6,189.6" sap2010:WorkflowViewState.IdRef="NGetText_1" ScopeIdentifier="c1eebca8-1e3d-4d6d-a556-93b855dc3460" TextString="[io_drive_data.Rows(io_drive_data.Rows.IndexOf(io_drive_data.AsEnumerable.Where(function(x) x(&quot;User&quot;).ToString.Equals(&quot;Stefan&quot;))(0)))(&quot;Distance&quot;)]" Version="V3">
               <uix:NGetText.Target>
                 <uix:TargetAnchorable BrowserURL="https://standalonedqmapper.dqmapper.co.za/#/reports/dashboards" CVScreenId="c60301bf-b604-4a92-aef0-bd60289d4db4" CvTextArea="336, 397, 22, 12" CvType="AnyWordGroup" DesignTimeRectangle="336, 394, 91, 18" DesignTimeScaleFactor="1" ElementType="Text" FullSelectorArgument="&lt;webctrl aaname='828' parentid='dashboard' tag='SPAN' /&gt;" FuzzySelectorArgument="&lt;webctrl parentid='dashboard' tag='SPAN' type='' class='smb-text-ellipsis ng-binding' /&gt;" Guid="f50daccc-6028-4b51-9a6d-a82408426e4f" InformativeScreenshot="dc5b55ca5f91e783e6dd5aa809ae2098.png" ScopeSelectorArgument="&lt;html app='msedge.exe' title='Index - Ctrack' /&gt;" SearchSteps="FuzzySelector, CV" Version="V4" Visibility="Interactive">
                   <uix:TargetAnchorable.Anchors>
-                    <scg:List x:TypeArguments="uix:ITarget" Capacity="4">
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
                       <uix:Target CVScreenId="c60301bf-b604-4a92-aef0-bd60289d4db4" CvTextArea="193, 397, 71, 14" CvTextArgument="JB 61 HF GP" CvType="Text" DesignTimeRectangle="194, 394, 138, 18" ElementType="Text" FullSelectorArgument="&lt;webctrl aaname='JB 61 HF GP' parentid='dashboard' tag='SPAN' /&gt;" FuzzySelectorArgument="&lt;webctrl aaname='JB 61 HF GP' parentid='dashboard' tag='SPAN' type='' class='smb-text-ellipsis ng-binding' check:innerText='JB 61 HF GP' /&gt;" Guid="b9a9263f-7124-461f-a3d2-7915fbae5047" SearchSteps="FuzzySelector, CV" />
                     </scg:List>
                   </uix:TargetAnchorable.Anchors>
                 </uix:TargetAnchorable>
               </uix:NGetText.Target>
             </uix:NGetText>
-            <uix:NGetText DisplayName="Get Text 'KT09CLGP'" sap:VirtualizedContainerService.HintSize="353.6,189.6" sap2010:WorkflowViewState.IdRef="NGetText_2" ScopeIdentifier="c1eebca8-1e3d-4d6d-a556-93b855dc3460" TextString="[out_distances(&quot;Christiaan&quot;)]" Version="V3">
+            <uix:NGetText DisplayName="Get Text 'KT09CLGP'" sap:VirtualizedContainerService.HintSize="353.6,189.6" sap2010:WorkflowViewState.IdRef="NGetText_2" ScopeIdentifier="c1eebca8-1e3d-4d6d-a556-93b855dc3460" TextString="[io_drive_data.Rows(io_drive_data.Rows.IndexOf(io_drive_data.AsEnumerable.Where(Function(x) x(&quot;User&quot;).ToString.Equals(&quot;Christiaan&quot;))(0)))(&quot;Distance&quot;)]" Version="V3">
               <uix:NGetText.Target>
                 <uix:TargetAnchorable BrowserURL="https://standalonedqmapper.dqmapper.co.za/#/reports/dashboards" CVScreenId="7a57d9a0-e2a5-4fcd-bd2f-c5ae9a7dc12f" CvTextArea="335, 460, 24, 12" CvType="AnyWordGroup" DesignTimeRectangle="336, 457, 91, 18" DesignTimeScaleFactor="1" ElementType="Text" FullSelectorArgument="&lt;webctrl aaname='407' parentid='dashboard' tag='SPAN' /&gt;" FuzzySelectorArgument="&lt;webctrl parentid='dashboard' tag='SPAN' type='' class='smb-text-ellipsis ng-binding' /&gt;" Guid="9645e683-0674-4459-9b7b-d890186e385d" InformativeScreenshot="e0e76ccb3a068c6560392c20a217498f.png" ScopeSelectorArgument="&lt;html app='msedge.exe' title='Index - Ctrack' /&gt;" SearchSteps="FuzzySelector, CV" Version="V4" Visibility="Interactive">
                   <uix:TargetAnchorable.Anchors>
-                    <scg:List x:TypeArguments="uix:ITarget" Capacity="4">
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
                       <uix:Target CVScreenId="7a57d9a0-e2a5-4fcd-bd2f-c5ae9a7dc12f" CvTextArea="193, 460, 62, 12" CvTextArgument="KT09CLGP" CvType="Text" DesignTimeRectangle="194, 457, 138, 18" ElementType="Text" FullSelectorArgument="&lt;webctrl aaname='KT09CLGP' parentid='dashboard' tag='SPAN' /&gt;" FuzzySelectorArgument="&lt;webctrl aaname='KT09CLGP' parentid='dashboard' tag='SPAN' type='' class='smb-text-ellipsis ng-binding' check:innerText='KT09CLGP' /&gt;" Guid="2777557d-c2b0-47d4-b3ce-b132b2d35e8b" SearchSteps="FuzzySelector, CV" />
                     </scg:List>
                   </uix:TargetAnchorable.Anchors>
                 </uix:TargetAnchorable>
               </uix:NGetText.Target>
             </uix:NGetText>
-            <uix:NGetText DisplayName="Get Text 'KV13PZGP'" sap:VirtualizedContainerService.HintSize="353.6,189.6" sap2010:WorkflowViewState.IdRef="NGetText_3" ScopeIdentifier="c1eebca8-1e3d-4d6d-a556-93b855dc3460" TextString="[out_distances(&quot;Derrick&quot;)]" Version="V3">
+            <uix:NGetText DisplayName="Get Text 'KV13PZGP'" sap:VirtualizedContainerService.HintSize="353.6,182.4" sap2010:WorkflowViewState.IdRef="NGetText_3" ScopeIdentifier="c1eebca8-1e3d-4d6d-a556-93b855dc3460" TextString="[io_drive_data.Rows(io_drive_data.Rows.IndexOf(io_drive_data.AsEnumerable.Where(Function(x) x(&quot;User&quot;).ToString.Equals(&quot;Derrick&quot;))(0)))(&quot;Distance&quot;)]" Version="V3">
               <uix:NGetText.Target>
                 <uix:TargetAnchorable BrowserURL="https://standalonedqmapper.dqmapper.co.za/#/reports/dashboards" CVScreenId="7a57d9a0-e2a5-4fcd-bd2f-c5ae9a7dc12f" CvTextArea="335, 478, 24, 12" CvType="AnyWordGroup" DesignTimeRectangle="336, 475, 91, 18" DesignTimeScaleFactor="1" ElementType="Text" FullSelectorArgument="&lt;webctrl aaname='316' parentid='dashboard' tag='SPAN' /&gt;" FuzzySelectorArgument="&lt;webctrl parentid='dashboard' tag='SPAN' type='' class='smb-text-ellipsis ng-binding' /&gt;" Guid="3415a902-56f9-4433-b466-17f89ac15c39" InformativeScreenshot="9407e7886f16c14c72c2bab951502c6d.png" ScopeSelectorArgument="&lt;html app='msedge.exe' title='Index - Ctrack' /&gt;" SearchSteps="FuzzySelector, CV" Version="V4" Visibility="Interactive">
                   <uix:TargetAnchorable.Anchors>
-                    <scg:List x:TypeArguments="uix:ITarget" Capacity="4">
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
                       <uix:Target CVScreenId="7a57d9a0-e2a5-4fcd-bd2f-c5ae9a7dc12f" CvTextArea="193, 478, 63, 12" CvTextArgument="KV13PZGP" CvType="Text" DesignTimeRectangle="194, 475, 138, 18" ElementType="Text" FullSelectorArgument="&lt;webctrl aaname='KV13PZGP' parentid='dashboard' tag='SPAN' /&gt;" FuzzySelectorArgument="&lt;webctrl aaname='KV13PZGP' parentid='dashboard' tag='SPAN' type='' class='smb-text-ellipsis ng-binding' check:innerText='KV13PZGP' /&gt;" Guid="7c04f872-b2e3-46c2-985b-e47041c9199d" SearchSteps="FuzzySelector, CV" />
                     </scg:List>
                   </uix:TargetAnchorable.Anchors>
                 </uix:TargetAnchorable>
               </uix:NGetText.Target>
             </uix:NGetText>
-            <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="353.6,168.8" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Trace" Message="[&quot;Stefan Distance = &quot; + out_distances(&quot;Stefan&quot;) + vbNewLine + &#xD;&#xA;&quot;Christiaan Distance = &quot; + out_distances(&quot;Christiaan&quot;) + vbNewLine + &#xD;&#xA;&quot;Derrick Distance = &quot; + out_distances(&quot;Derrick&quot;)]" />
           </Sequence>
         </ActivityAction>
       </uix:NApplicationCard.Body>
@@ -186,5 +187,15 @@
         <uix:TargetApp Area="0, 0, 0, 0" BrowserType="Edge" IconBase64="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" InformativeScreenshot="49c6528b340b26cf897a3ad8b642deac.jpg" Selector="&lt;html app='msedge.exe' title='Index - Ctrack' /&gt;" Title="Index - Ctrack" Url="https://standalonedqmapper.dqmapper.co.za/#/reports/dashboards" />
       </uix:NApplicationCard.TargetApp>
     </uix:NApplicationCard>
+    <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" DataTable="[io_drive_data]" DisplayName="For Each Row in Data Table" sap:VirtualizedContainerService.HintSize="449.6,353.6" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+      <ui:ForEachRow.Body>
+        <ActivityAction x:TypeArguments="sd:DataRow">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="sd:DataRow" Name="CurrentRow" />
+          </ActivityAction.Argument>
+          <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334.4,142.4" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Distance: &quot; + CurrentRow(&quot;Distance&quot;).ToString + &quot;km&quot; + &quot; for User: &quot; + CurrentRow(&quot;User&quot;).ToString]" />
+        </ActivityAction>
+      </ui:ForEachRow.Body>
+    </ui:ForEachRow>
   </Sequence>
 </Activity>
