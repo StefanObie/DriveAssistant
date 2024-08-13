@@ -21725,15 +21725,15 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\stefa\\.nuget\\packages\\": {}
+    "C:\\Users\\steff\\.nuget\\packages\\": {}
   },
   "project": {
     "restore": {
       "projectUniqueName": "ExcelDriveSummary",
       "projectName": "ExcelDriveSummary",
-      "projectPath": "D:\\HobbyProjects\\DriveAssistant\\ExcelDriveSummary\\.local",
-      "packagesPath": "C:\\Users\\stefa\\.nuget\\packages\\",
-      "outputPath": "D:\\HobbyProjects\\DriveAssistant\\ExcelDriveSummary\\.local"
+      "projectPath": "C:\\StefanOberholzer\\GitGud\\DriveAssistant\\ExcelDriveSummary\\.local",
+      "packagesPath": "C:\\Users\\steff\\.nuget\\packages\\",
+      "outputPath": "C:\\StefanOberholzer\\GitGud\\DriveAssistant\\ExcelDriveSummary\\.local"
     },
     "frameworks": {
       "net8.0-windows7.0": {
@@ -21764,7 +21764,7 @@
             "version": "[24.10.2, 24.10.2]"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Users\\stefa\\AppData\\Local\\Programs\\UiPath\\Studio\\PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Users\\steff\\AppData\\Local\\Programs\\UiPath\\Studio\\PortableRuntimeIdentifierGraph.json"
       }
     },
     "runtimes": {
