@@ -12,14 +12,7 @@
       "Path": "Main.xaml",
       "SortBy": 0,
       "VariablesSectionElementsOrder": [
-        "drive_data&Sequence_1",
-        "Users&Sequence_1",
-        "driving_profile&Sequence_1",
-        "claim_free_years&Sequence_1",
-        "annual_check&Sequence_1",
-        "night_time_drive&Sequence_1",
-        "qualifying_spend&Sequence_1",
-        "distance&Sequence_1"
+        "drive_data&Sequence_1"
       ],
       "ArgumentsSectionElementsOrder": [
         "in_send_email"
