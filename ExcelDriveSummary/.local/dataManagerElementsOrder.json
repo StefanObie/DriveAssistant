@@ -14,9 +14,7 @@
       "VariablesSectionElementsOrder": [
         "drive_data&Sequence_1"
       ],
-      "ArgumentsSectionElementsOrder": [
-        "in_send_email"
-      ],
+      "ArgumentsSectionElementsOrder": [],
       "ConstantsSectionElementsOrder": [],
       "AddedNamespaces": null
     },
