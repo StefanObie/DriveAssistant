@@ -27,5 +27,4 @@ Other useful links:
 The DQ Mapper for C and S works most of the time. I can use the DQ Mapper of the planholder to get all the distance information of all the users. Still need to sign into the accounts for the drive dashboard information. 
 
 **TO-DO**
-1. Access DQ Mapper through plan holder.
-2. Insert trigger/wait for user to login then continue execution. The user must manually login into each of the 3 different accounts. 
+1. Night time drive should rather be calculated, if possible.
