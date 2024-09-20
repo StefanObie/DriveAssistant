@@ -27,11 +27,9 @@ Other useful links:
 The DQ Mapper for C and S works most of the time. I can use the DQ Mapper of the planholder to get all the distance information of all the users. Still need to sign into the accounts for the drive dashboard information. 
 
 **TO-DO**
-<<<<<<< HEAD
 1. Night time drive should rather be calculated, if possible.
-=======
-1. Access DQ Mapper through plan holder.
-2. Insert trigger/wait for user to login then continue execution. The user must manually login into each of the 3 different accounts. 
+2. Access DQ Mapper through plan holder.
+3. Insert trigger/wait for user to login then continue execution. The user must manually login into each of the 3 different accounts. 
 
 ## 16 September 2024
 
@@ -60,6 +58,3 @@ TODO:
 Cool websites:
 1. Get speed limit from a click: [RME Speed Limit Demo](https://demo.support.here.com/examples/v3/rme_speed_limits). Open the console (F12) to see what the API call looks like. It is a older version, but still useful.
 2. Get speed limit from coordinates: [Speed Limits using Geocoder + PDE](https://demo.support.here.com/examples/v3/link_speed_locator).
-
-
->>>>>>> 5a1b85d5f6439773db0f58c0a8d8a909db23fedb
