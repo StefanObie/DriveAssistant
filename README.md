@@ -3,7 +3,6 @@
 ## Overview
 ![Discovery Movement Report](movement_report.png)
 
-
 ## Notes
 
 How to get accurate [Accurate Time](https://lastminuteengineers.com/esp32-ntp-server-date-time-tutorial/) to an ESP32 through wifi.
@@ -15,7 +14,7 @@ Tools -> partition scheme -> "Hugh app (3MB no OTA/ 1MB SPIFFS)"
 ```
 
 ### 26 July 2024
-There is 2 speed limit APIs:
+There are 2 speed limit APIs:
 1. **Google Roads API**: Paid API, USD 0.02 per request. It is the easier API. Free trail $300 and 87 days remaining.
 2. **Overpass API**: More compilacted, but free. It uses nodes to identify a road. With the API call I get the nodes, but not the road, and no speed limit. More testing is required. [Docs](https://wiki.openstreetmap.org/wiki/Overpass_API).
 Other useful links:
@@ -47,14 +46,21 @@ The full docs can be found [here](https://developer.here.com/documentation/geoco
 New API:
 
 ```
-https://revgeocode.search.hereapi.com/v1/revgeocode?at=-24.89823311476949,28.216293154714478,50&maxResults=1&apiKey=O3mrl3T9c5sWnhRMSj5g_AunesqRba3Cku0z8I6Rd0M&showNavAttributes=speedLimits&types=street
+https://revgeocode.search.hereapi.com/v1/revgeocode?
+at=-24.89823311476949,28.216293154714478,50&maxResults=1&
+apiKey=XXXd0M&showNavAttributes=speedLimits&types=street
 ```
 
 TODO: 
-1. Protect API KEY.
+1. ~~Protect API KEY.~~
 2. Ensure usage does not exceed free tier. See [usage](https://platform.here.com/management/usage).
 3. Try to remove payment information.
 
 Cool websites:
 1. Get speed limit from a click: [RME Speed Limit Demo](https://demo.support.here.com/examples/v3/rme_speed_limits). Open the console (F12) to see what the API call looks like. It is a older version, but still useful.
 2. Get speed limit from coordinates: [Speed Limits using Geocoder + PDE](https://demo.support.here.com/examples/v3/link_speed_locator).
+
+## 20 September 2024
+Created here_api.py python files to test the HERE platform API. Simulated location and api responses can be used to reduce the number of api calls made. No further testing for multiple locations was done so far. 
+
+Managed to hide the api key in the keys.py file, included int he venv folder which is not saved to github. 
