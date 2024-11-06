@@ -1,0 +1,41 @@
+{
+    "items": [
+        {
+            "title": "George Storrar Dr, Tshwane, 0181, South Africa",
+            "id": "here:af:streetsection:2XfUQFuxfIt1fzoOZhef.C",
+            "resultType": "street",
+            "address": {
+                "label": "George Storrar Dr, Tshwane, 0181, South Africa",
+                "countryCode": "ZAF",
+                "countryName": "South Africa",
+                "state": "Gauteng",
+                "county": "Tshwane",
+                "city": "Tshwane",
+                "district": "Groenkloof",
+                "street": "George Storrar Dr",
+                "postalCode": "0181"
+            },
+            "position": {
+                "lat": -25.7714,
+                "lng": 28.2092
+            },
+            "distance": 6,
+            "mapView": {
+                "west": 28.19957,
+                "south": -25.77424,
+                "east": 28.22453,
+                "north": -25.77091
+            },
+            "navigationAttributes": {
+                "speedLimits": [
+                    {
+                        "maxSpeed": 60,
+                        "direction": "E",
+                        "speedUnit": "kph",
+                        "source": "derived"
+                    }
+                ]
+            }
+        }
+    ]
+}

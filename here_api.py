@@ -5,10 +5,33 @@ API_KEY = keys.HERE_API_KEY
 # Other imports
 import requests
 import json
+import os
+import csv
 
 def get_location_simulate():
+    # R516, Bela-Bela
     lat = -24.89823311476949
     lng = 28.216293154714478
+
+    # Wierda Road M10
+    # lat = -25.832088509479068
+    # lng = 28.140736536789465
+
+    # Old Jhb, R101
+    # lat = -25.813501685709962
+    # lng = 28.1579257297497
+
+    # M10 Waterkloof AFB
+    # lat = -25.80944232186839
+    # lng = 28.21418274673497
+
+    # N1 Waterkloof
+    # lat = -25.81760389691201
+    # lng = 28.2543000692962
+
+    # M7 Groenkloof
+    lat = -25.771346392508843
+    lng = 28.20919239209438
 
     return lat, lng
 
@@ -94,19 +117,48 @@ def get_speedlimit(response):
         maxspeeds = [m['maxSpeed'] for m in response['items'][0]['navigationAttributes']['speedLimits']]
         return min(maxspeeds)
     
+def save_to_file(lat, lng, maxspeed, response):
+    filename = f'here_response_archive/{maxspeed}km_{lat:.5f}_{lng:.5f}.json'
+    with open(filename, 'w') as archive_file:
+        json.dump(response, archive_file, indent=4)
+
+    filename = 'speedlimit.csv'
+    with open(filename, 'a') as master_file:
+        master_file.write(f'{lat},{lng},{maxspeed},"{response['items'][0]['title']}"\n')
+
+def check_location_cache(lat, lng, tolerance=0.001):
+    try:
+        with open('speedlimit.csv', mode='r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                csv_lat = float(row['lat'])
+                csv_lng = float(row['lng'])
+                if abs(csv_lat - lat) <= tolerance and abs(csv_lng - lng) <= tolerance:
+                    return row
+    except FileNotFoundError:
+        pass
+    return None
+
 def main():
     lat, lng = get_location() # Simulated at the moment
 
     response = here_api(lat, lng)
     maxspeed = get_speedlimit(response)
+    save_to_file(lat, lng, maxspeed, response)
     print(maxspeed)
 
 def main_simulate():
     lat, lng = get_location_simulate()
 
-    response = here_api_simulate(lat, lng)
-    maxspeed = get_speedlimit(response)
-    print(maxspeed)
+    existing_data = check_location_cache(lat, lng)
+    if existing_data:
+        maxspeed = existing_data['speedlimit']
+        print(f'Speedlimit found in cache: {maxspeed}')
+    else:
+        response = here_api_simulate(lat, lng)
+        maxspeed = get_speedlimit(response)
+        save_to_file(lat, lng, maxspeed, response)
+        print(maxspeed)
 
 if __name__ == "__main__":
     # main()

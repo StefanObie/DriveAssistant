@@ -64,3 +64,8 @@ Cool websites:
 Created here_api.py python files to test the HERE platform API. Simulated location and api responses can be used to reduce the number of api calls made. No further testing for multiple locations was done so far. 
 
 Managed to hide the api key in the keys.py file, included int he venv folder which is not saved to github. 
+
+## Wed 6 Nov 2024
+0.001 tolerance on lat long coordinates are about 100m. 
+
+Implemented a cache for the speedlimit data. It also saves all the api call respones in the `here_response_archive` folder.
