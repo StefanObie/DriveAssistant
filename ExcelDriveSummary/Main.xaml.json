@@ -6,11 +6,11 @@
   "OriginalIconFileName": null,
   "Arguments": [
     {
-      "Name": "in_send_email",
-      "DisplayName": "in_send_email",
+      "Name": "usernames",
+      "DisplayName": "usernames",
       "Category": null,
       "Tooltip": null,
-      "Placeholder": "True",
+      "Placeholder": "Stefan;",
       "Widget": null,
       "IsRequired": false,
       "IsPrincipal": true,
