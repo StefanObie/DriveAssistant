@@ -69,3 +69,10 @@ Managed to hide the api key in the keys.py file, included int he venv folder whi
 0.001 tolerance on lat long coordinates are about 100m. 
 
 Implemented a cache for the speedlimit data. It also saves all the api call respones in the `here_response_archive` folder.
+
+
+## Mon 2 Nov 2024
+
+[Guide to NEO-6M GPS Module with Arduino](https://randomnerdtutorials.com/guide-to-neo-6m-gps-module-with-arduino/)
+
+[KitchenSink](https://github.com/mikalhart/TinyGPSPlus/blob/master/examples/KitchenSink/KitchenSink.ino) just about every built-in operation of TinyGPSPlus.
