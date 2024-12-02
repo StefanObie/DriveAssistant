@@ -1,5 +1,5 @@
 // #include <TinyGPSPlus.h>
-#include <SoftwareSerial.h>
+// #include <SoftwareSerial.h>
 #include <TinyGPS++.h>
 #include <BluetoothSerial.h>
 #include <WiFi.h>
@@ -33,7 +33,7 @@ const char* password = WIFI_PASSWORD;
 const String apiKey = HERE_API_KEY;
 
 // The serial connection to the GPS device
-SoftwareSerial ss(GPS_RX_PIN, GPS_TX_PIN);
+// SoftwareSerial ss(GPS_RX_PIN, GPS_TX_PIN);
 
 // Function to convert degrees to cardinal direction
 String getCardinalDirection(double heading) {
@@ -78,7 +78,9 @@ void setup() {
   Serial.begin(115200);
   Serial.println("Initializing...");
   
-  ss.begin(GPSBaud);
+  // Begin GPS communication
+  Serial1.begin(GPSBaud, SERIAL_8N1, GPS_RX_PIN, GPS_TX_PIN);
+  Serial.println("GPS module initialized.");
 
   // Begin Bluetooth communication
   if (!btSerial.begin("ESP32")) { // Set Bluetooth device name
@@ -115,8 +117,8 @@ void setup() {
 
 void loop() {
   // Check for GPS data and parse it
-  while (ss.available() > 0) {
-    gps.encode(ss.read());
+  while (Serial1.available() > 0) {
+    gps.encode(Serial1.read());
   }
 
   // Check if GPS time and date are valid
