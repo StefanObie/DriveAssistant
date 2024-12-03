@@ -1,0 +1,47 @@
+{
+    "items": [
+        {
+            "title": "Sonae House, Sandton, 2191, South Africa",
+            "id": "here:af:streetsection:3vZcFpKVTtbYw0MuaE24KD",
+            "resultType": "street",
+            "address": {
+                "label": "Sonae House, Sandton, 2191, South Africa",
+                "countryCode": "ZAF",
+                "countryName": "South Africa",
+                "state": "Gauteng",
+                "county": "Johannesburg",
+                "city": "Sandton",
+                "district": "The Woodlands",
+                "street": "Sonae House",
+                "postalCode": "2191"
+            },
+            "position": {
+                "lat": -26.05849,
+                "lng": 28.08845
+            },
+            "distance": 100,
+            "mapView": {
+                "west": 28.08845,
+                "south": -26.05849,
+                "east": 28.0892,
+                "north": -26.05839
+            },
+            "navigationAttributes": {
+                "speedLimits": [
+                    {
+                        "maxSpeed": 20,
+                        "direction": "W",
+                        "speedUnit": "kph",
+                        "source": "derived"
+                    },
+                    {
+                        "maxSpeed": 20,
+                        "direction": "E",
+                        "speedUnit": "kph",
+                        "source": "derived"
+                    }
+                ]
+            }
+        }
+    ]
+}

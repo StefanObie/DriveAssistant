@@ -1,18 +1,11 @@
-// #include <TinyGPSPlus.h>
-// #include <SoftwareSerial.h>
 #include <TinyGPS++.h>
 #include <BluetoothSerial.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
-#include "config.h" // Store API Key and WiFi credentials
+#include <ArduinoJson.h>
+#include "config.h"
 
-// Initialize TinyGPS++ and BluetoothSerial objects
-TinyGPSPlus gps;
-BluetoothSerial btSerial;
-
-// Set GPS module baud rate
-const uint32_t GPSBaud = 9600;
-
+// Digit Pin
 #define LS_DIGIT_G 33
 #define LS_DIGIT_CF 32
 
@@ -22,18 +15,87 @@ const uint32_t GPSBaud = 9600;
 #define MS_DIGIT3 27
 
 // Define pins for GPS communication
+const uint32_t GPSBaud = 9600;
 #define GPS_RX_PIN 16
 #define GPS_TX_PIN 17
 
-// WiFi credentials (stored in config.h)
+// config.h
 const char* ssid = WIFI_SSID;
 const char* password = WIFI_PASSWORD;
-
-// HERE API Key (stored in config.h)
 const String apiKey = HERE_API_KEY;
 
-// The serial connection to the GPS device
-// SoftwareSerial ss(GPS_RX_PIN, GPS_TX_PIN);
+TinyGPSPlus gps;
+BluetoothSerial btSerial;
+
+const String jsonResponseWork = R"({
+    "items": [
+        {
+            "title": "Sonae House, Sandton, 2191, South Africa",
+            "id": "here:af:streetsection:3vZcFpKVTtbYw0MuaE24KD",
+            "resultType": "street",
+            "address": {
+                "label": "Sonae House, Sandton, 2191, South Africa",
+                "countryCode": "ZAF",
+                "countryName": "South Africa",
+                "state": "Gauteng",
+                "county": "Johannesburg",
+                "city": "Sandton",
+                "district": "The Woodlands",
+                "street": "Sonae House",
+                "postalCode": "2191"
+            },
+            "position": {
+                "lat": -26.05849,
+                "lng": 28.08845
+            },
+            "distance": 100,
+            "mapView": {
+                "west": 28.08845,
+                "south": -26.05849,
+                "east": 28.0892,
+                "north": -26.05839
+            },
+            "navigationAttributes": {
+                "speedLimits": [
+                    {
+                        "maxSpeed": 20,
+                        "direction": "W",
+                        "speedUnit": "kph",
+                        "source": "derived"
+                    },
+                    {
+                        "maxSpeed": 20,
+                        "direction": "E",
+                        "speedUnit": "kph",
+                        "source": "derived"
+                    }
+                ]
+            }
+        }
+    ]
+})";
+
+const String jsonResponse = R"({
+        "items": [
+            {
+                "title": "Wierda Rd, Tshwane, 0137, South Africa",
+                "navigationAttributes": {
+                    "speedLimits": [
+                        {
+                            "maxSpeed": 60,
+                            "direction": "NE",
+                            "speedUnit": "kph"
+                        },
+                        {
+                            "maxSpeed": 60,
+                            "direction": "SW",
+                            "speedUnit": "kph"
+                        }
+                    ]
+                }
+            }
+        ]
+    })";
 
 // Function to convert degrees to cardinal direction
 String getCardinalDirection(double heading) {
@@ -42,34 +104,96 @@ String getCardinalDirection(double heading) {
   return String(directions[index]);
 }
 
-// Function to get speed limit using HERE API
-String getSpeedLimit(double lat, double lng) {
-    // parameters = {
-    //     'at': f'{lat},{lng},{rad}',
-    //     'maxResults': '1',
-    //     'apiKey': API_KEY,
-    //     'showNavAttributes': 'speedLimits',
-    //     'types': 'street'
-    // }
-    // url = F("https://revgeocode.search.hereapi.com/v1/revgeocode?at={lat},{lng},50&maxResult=1&apiKey={API_KEY}&showNavAttributes=speedLimits&types=street");
-    String url = "https://www.thunderclient.com/welcome";
+String constructApiUrl(double lat, double lng) {
+    const String baseUrl = "https://revgeocode.search.hereapi.com/v1/revgeocode";
 
-  // String url = "https://router.hereapi.com/v8/routes?transportMode=car&origin=" + 
-  //              String(lat, 6) + "," + String(lng, 6) + "&apikey=" + apiKey;
+    String params = "?at=" + String(lat, 6) + "," + String(lng, 6) + ",50" +  //at={lat},{lng},{radius=50}
+                    "&maxResults=" + "1" +
+                    "&apiKey=" + apiKey +
+                    "&showNavAttributes=" + "speedLimits" +
+                    "&types=" + "street";
+
+    return baseUrl + params;
+}
+
+int getMaxSpeedForDirection(const String& jsonResponse, String& targetDirection) {
+    // Parse the JSON response
+    StaticJsonDocument<2048> doc;
+    DeserializationError error = deserializeJson(doc, jsonResponse);
+
+    if (error) { 
+        Serial.print("[ERROR] JSON deserialization failed: ");
+        Serial.println(error.c_str());
+        return -1; // Return -1 to indicate an error
+    }
+
+    // Navigate through the JSON structure
+    JsonArray items = doc["items"];
+    if (items.isNull()) {
+        Serial.println("[ERROR] No items found in JSON response.");
+        return -1;
+    }
+
+    for (JsonObject item : items) {
+        JsonArray speedLimits = item["navigationAttributes"]["speedLimits"];
+        if (speedLimits.isNull()) {
+            Serial.println("[ERROR] No speed limits found.");
+            continue;
+        }
+
+        // Iterate through speed limits
+        int fallbackSpeed;
+        for (JsonObject speedLimit : speedLimits) {
+            String direction = speedLimit["direction"].as<String>();
+            int maxSpeed = speedLimit["maxSpeed"].as<int>();
+
+            if (fallbackSpeed > maxSpeed) {
+              //Fallback speed is the min of all speed limits found
+              fallbackSpeed = maxSpeed;
+            } 
+
+            if (direction == targetDirection) {
+                return maxSpeed; // Return the maxSpeed for the matching direction
+            }
+        }
+        return fallbackSpeed ;
+    }
+
+    Serial.println("[ERROR] No matching direction found.");
+    return -1;
+}
+
+// Function to get speed limit using HERE API
+String getSpeedLimit(double lat, double lng, String& direction) {
+  String url = "https://www.thunderclient.com/welcome";
+  Serial.println("[DEBUG] URL: " + url) ;
+
+  // String url = constructApiUrl(lat,lng) ;
   
   HTTPClient http;
   http.begin(url);
   int httpCode = http.GET();
+  Serial.println("[DEBUG] httpCode: " + httpCode );
 
   if (httpCode == 200) {
-    String payload = http.getString();
-    // Parse the JSON response to get the speed limit (assumes response parsing implemented)
-    // For simplicity, return raw payload. You can add a JSON library for more precise parsing.
+    // String payload = http.getString();
+    // String payload = jsonResponse ;
+    String payload = jsonResponseWork ;
+    Serial.println(payload);
     http.end();
-    return payload; 
+
+    int result = getMaxSpeedForDirection(payload, direction);
+    Serial.println("[DEBUG] getMaxSpeedForDirection Result = " + result) ;
+
+    if (result != -1) {
+      return String(result);
+    }
+
+    return "[ERROR] JsonParse: Could not extract the speed limit from the json.";
+
   } else {
     http.end();
-    return "Error fetching speed limit.";
+    return "[ERROR] HTTP GET Failed: Could not fetching speed limit.";
   }
 }
 
@@ -113,6 +237,7 @@ void setup() {
     Serial.println("Connecting to WiFi...");
   }
   Serial.println("Connected to WiFi.");
+  btSerial.println("[DEBUG] Setup Completed.");
 }
 
 void loop() {
@@ -123,23 +248,27 @@ void loop() {
 
   // Check if GPS time and date are valid
   // if (gps.time.isValid() || gps.date.isValid() || gps.location.isValid()) {
-    // Get the current minute and second from GPS
+  if (gps.time.isValid() && gps.time.isUpdated() &&
+      gps.date.isValid() &&
+      gps.location.isValid() && gps.location.isUpdated()) {
+
     int currentMinute = gps.time.minute();
     int currentSecond = gps.time.second();
 
-    // Send data on even minutes and only once per cycle (close to 0 seconds)
-    // if (currentMinute % 2 == 0 && currentSecond == 0) {
-    if (currentSecond % 10 == 0) {
+    // Send data on even minutes
+    if (currentMinute % 2 == 0 && currentSecond == 0) {
+    // if (currentSecond % 30 == 0) {
       double lat = gps.location.lat();
       double lng = gps.location.lng();
       double heading = gps.course.deg();
       String direction = getCardinalDirection(heading);
 
       // Get speed limit
-      String speedLimit = getSpeedLimit(lat, lng);
+      String speedLimit = getSpeedLimit(lat, lng, direction);
 
       // Prepare the data string as a comma-separated list
-      String data = String(gps.date.year()) + "/" + 
+      String data = String(gps.course.age()) + "," +
+                    String(gps.date.year()) + "/" +
                     String(gps.date.month()) + "/" + 
                     String(gps.date.day()) + "," +
                     String(gps.time.hour()) + ":" + 
@@ -148,21 +277,12 @@ void loop() {
                     String(lat, 6) + "," +
                     String(lng, 6) + "," +
                     direction + "," +
-                    String(gps.speed.kmph()) + "kmh," + 
-                    String(gps.course.age()) + "ms," +
-                    String(gps.course.value()) + 
+                    String(gps.speed.kmph()) + "," +
                     speedLimit;
 
-      // Print data to Bluetooth and Serial monitor
       btSerial.println(data);
       Serial.println(data);
-
-      // Wait for a few seconds to avoid duplicate transmissions within the same minute
-      delay(3000);
+      delay(1000);
     }
-  // } 
-  // else {
-  //   btSerial.println("GPS data not valid yet...");
-  //   Serial.println("GPS data not valid yet...");
-  // }
+  }
 }
