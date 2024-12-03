@@ -11,7 +11,7 @@
 
 #define MS_DIGIT0 12
 #define MS_DIGIT1 13
-#define MS_DIGIT2 14 
+#define MS_DIGIT2 14
 #define MS_DIGIT3 27
 
 // Define pins for GPS communication
@@ -23,6 +23,7 @@ const uint32_t GPSBaud = 9600;
 const char* ssid = WIFI_SSID;
 const char* password = WIFI_PASSWORD;
 const String apiKey = HERE_API_KEY;
+bool debuggingEnabled = true;
 
 TinyGPSPlus gps;
 BluetoothSerial btSerial;
@@ -97,124 +98,162 @@ const String jsonResponse = R"({
         ]
     })";
 
+void debugPrint(const String& debugLine) {
+  if (debuggingEnabled) {
+    Serial.println(debugLine);
+    btSerial.println(debugLine);
+  }
+}
+
 // Function to convert degrees to cardinal direction
 String getCardinalDirection(double heading) {
-  const char* directions[] = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
+  const char* directions[] = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
   int index = (int)((heading + 22.5) / 45.0) % 8;
   return String(directions[index]);
 }
 
 String constructApiUrl(double lat, double lng) {
-    const String baseUrl = "https://revgeocode.search.hereapi.com/v1/revgeocode";
+  const String baseUrl = "https://revgeocode.search.hereapi.com/v1/revgeocode";
 
-    String params = "?at=" + String(lat, 6) + "," + String(lng, 6) + ",50" +  //at={lat},{lng},{radius=50}
-                    "&maxResults=" + "1" +
-                    "&apiKey=" + apiKey +
-                    "&showNavAttributes=" + "speedLimits" +
-                    "&types=" + "street";
+  String params = "?at=" + String(lat, 6) + "," + String(lng, 6) + ",50" +  //at={lat},{lng},{radius=50}
+                  "&maxResults=" + "1" + "&apiKey=" + apiKey + "&showNavAttributes=" + "speedLimits" + "&types=" + "street";
 
-    return baseUrl + params;
+  return baseUrl + params;
 }
 
 int getMaxSpeedForDirection(const String& jsonResponse, String& targetDirection) {
-    // Parse the JSON response
-    StaticJsonDocument<2048> doc;
-    DeserializationError error = deserializeJson(doc, jsonResponse);
+  // Parse the JSON response
+  StaticJsonDocument<2048> doc;
+  DeserializationError error = deserializeJson(doc, jsonResponse);
 
-    if (error) { 
-        Serial.print("[ERROR] JSON deserialization failed: ");
-        Serial.println(error.c_str());
-        return -1; // Return -1 to indicate an error
-    }
-
-    // Navigate through the JSON structure
-    JsonArray items = doc["items"];
-    if (items.isNull()) {
-        Serial.println("[ERROR] No items found in JSON response.");
-        return -1;
-    }
-
-    for (JsonObject item : items) {
-        JsonArray speedLimits = item["navigationAttributes"]["speedLimits"];
-        if (speedLimits.isNull()) {
-            Serial.println("[ERROR] No speed limits found.");
-            continue;
-        }
-
-        // Iterate through speed limits
-        int fallbackSpeed;
-        for (JsonObject speedLimit : speedLimits) {
-            String direction = speedLimit["direction"].as<String>();
-            int maxSpeed = speedLimit["maxSpeed"].as<int>();
-
-            if (fallbackSpeed > maxSpeed) {
-              //Fallback speed is the min of all speed limits found
-              fallbackSpeed = maxSpeed;
-            } 
-
-            if (direction == targetDirection) {
-                return maxSpeed; // Return the maxSpeed for the matching direction
-            }
-        }
-        return fallbackSpeed ;
-    }
-
-    Serial.println("[ERROR] No matching direction found.");
+  if (error) {
+    String debugLine = "[ERROR] JSON deserialization failed: " + String(error.c_str());
+    debugPrint(debugLine) ;
     return -1;
+  }
+
+  // Navigate through the JSON structure
+  JsonArray items = doc["items"];
+  if (items.isNull()) {
+    debugPrint("[ERROR] No items found in JSON response.");
+    return -1;
+  }
+
+  for (JsonObject item : items) {
+    JsonArray speedLimits = item["navigationAttributes"]["speedLimits"];
+    if (speedLimits.isNull()) {
+      debugPrint("[ERROR] No speed limits found.");
+      return -1;
+    }
+
+    // Iterate through speed limits
+    int fallbackSpeed = 999;
+    for (JsonObject speedLimit : speedLimits) {
+      String direction = speedLimit["direction"].as<String>();
+      int maxSpeed = speedLimit["maxSpeed"].as<int>();
+
+      String debugLine = "[DEBUG] Direction: " + direction + ", maxSpeed: " + String(maxSpeed);
+      debugPrint(debugLine);
+
+      if (fallbackSpeed > maxSpeed) {
+        //Fallback speed is the min of all speed limits found
+        fallbackSpeed = maxSpeed;
+      }
+
+      if (direction == targetDirection) {
+        return maxSpeed;  // Return the maxSpeed for the matching direction
+      }
+    }
+    String debugLine = "[DEBUG] No matching direction found, using fallback speed: " + String(fallbackSpeed) + " km/h.";
+    debugPrint(debugLine);
+
+    return fallbackSpeed;
+  }
+
+  debugPrint("[ERROR] End reached with no speed limit, getMaxSpeedForDirection.");
+  return -1;
 }
 
 // Function to get speed limit using HERE API
 String getSpeedLimit(double lat, double lng, String& direction) {
-  String url = "https://www.thunderclient.com/welcome";
-  Serial.println("[DEBUG] URL: " + url) ;
+  // String url = "https://www.thunderclient.com/welcome";
+  String url = constructApiUrl(lat,lng) ;
 
-  // String url = constructApiUrl(lat,lng) ;
-  
-  HTTPClient http;
-  http.begin(url);
-  int httpCode = http.GET();
-  Serial.println("[DEBUG] httpCode: " + httpCode );
+  String debugLine = "[DEBUG] URL: " + url;
+  debugPrint(debugLine);
 
-  if (httpCode == 200) {
-    // String payload = http.getString();
-    // String payload = jsonResponse ;
-    String payload = jsonResponseWork ;
-    Serial.println(payload);
-    http.end();
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    http.begin(url);
+    int httpCode = http.GET();
 
-    int result = getMaxSpeedForDirection(payload, direction);
-    Serial.println("[DEBUG] getMaxSpeedForDirection Result = " + result) ;
+    debugLine = "[DEBUG] httpCode: " + String(httpCode);
+    debugPrint(debugLine);
 
-    if (result != -1) {
-      return String(result);
+    if (httpCode == 200) {
+      String payload = http.getString();
+      // String payload = jsonResponse ;
+      // String payload = jsonResponseWork;
+      debugPrint(payload);
+      http.end();
+
+      int result = getMaxSpeedForDirection(payload, direction);
+      debugLine = "[DEBUG] getMaxSpeedForDirection Result = " + String(result);
+      debugPrint(debugLine);
+
+      if (result != -1) {
+        return String(result);
+      }
+
+      debugPrint("[ERROR] JsonParse: Could not extract the speed limit from the json.");
+
+    } else {
+      http.end();
+      debugPrint("[ERROR] HTTP GET Failed: Could not fetching speed limit.");
     }
-
-    return "[ERROR] JsonParse: Could not extract the speed limit from the json.";
-
   } else {
-    http.end();
-    return "[ERROR] HTTP GET Failed: Could not fetching speed limit.";
+    debugPrint("[ERROR] No wifi connection.");
+  }
+
+  return "ERROR";
+}
+
+void checkBluetoothCommands() {
+  if (btSerial.available()) {
+    String command = btSerial.readStringUntil('\n');
+    command.trim();
+
+    if (command.equalsIgnoreCase("debugOn")) {
+      debuggingEnabled = true;
+      debugPrint("[INFO] Debugging enabled.");
+    } else if (command.equalsIgnoreCase("debugOff")) {
+      debugPrint("[INFO] Debugging disabled.");
+      debuggingEnabled = false;
+    } else {
+      debugPrint("[WARN] Unknown command: " + command);
+    }
   }
 }
 
 void setup() {
   // Begin Serial communication for debugging
   Serial.begin(115200);
-  Serial.println("Initializing...");
-  
+  debugPrint("Initializing...");
+
   // Begin GPS communication
   Serial1.begin(GPSBaud, SERIAL_8N1, GPS_RX_PIN, GPS_TX_PIN);
-  Serial.println("GPS module initialized.");
+  debugPrint("GPS module initialized.");
 
   // Begin Bluetooth communication
-  if (!btSerial.begin("ESP32")) { // Set Bluetooth device name
-    Serial.println("Bluetooth initialization failed!");
-    while (1); // Stay here in case of Bluetooth failure
+  if (!btSerial.begin("ESP32")) {  // Set Bluetooth device name
+    debugPrint("Bluetooth initialization failed!");
+    while (1)
+      ;  // Stay here in case of Bluetooth failure
   }
-  Serial.println("Bluetooth initialized. Waiting for connections...");
+  debugPrint("Bluetooth initialized. Waiting for connections...");
 
   // Begin GPS communication
-  Serial.println("GPS module initialized.");
+  debugPrint("GPS module initialized.");
 
   // Digital Output pin setup and init
   pinMode(LS_DIGIT_G, OUTPUT);
@@ -234,13 +273,15 @@ void setup() {
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
-    Serial.println("Connecting to WiFi...");
+    debugPrint("Connecting to WiFi...");
   }
-  Serial.println("Connected to WiFi.");
-  btSerial.println("[DEBUG] Setup Completed.");
+  debugPrint("Connected to WiFi.");
+  debugPrint("[DEBUG] Setup Completed.");
 }
 
 void loop() {
+  checkBluetoothCommands();
+
   // Check for GPS data and parse it
   while (Serial1.available() > 0) {
     gps.encode(Serial1.read());
@@ -248,8 +289,8 @@ void loop() {
 
   // Check if GPS time and date are valid
   // if (gps.time.isValid() || gps.date.isValid() || gps.location.isValid()) {
-  if (gps.time.isValid() && gps.time.isUpdated() &&
-      gps.date.isValid() &&
+  if (gps.time.isValid() && gps.time.isUpdated() && 
+      gps.date.isValid() && gps.date.isUpdated() &&
       gps.location.isValid() && gps.location.isUpdated()) {
 
     int currentMinute = gps.time.minute();
@@ -267,22 +308,22 @@ void loop() {
       String speedLimit = getSpeedLimit(lat, lng, direction);
 
       // Prepare the data string as a comma-separated list
-      String data = String(gps.course.age()) + "," +
-                    String(gps.date.year()) + "/" +
+      String data = String(gps.course.age()) + "," + 
+                    String(gps.date.year()) + "/" + 
                     String(gps.date.month()) + "/" + 
-                    String(gps.date.day()) + "," +
+                    String(gps.date.day()) + "," + 
                     String(gps.time.hour()) + ":" + 
                     String(gps.time.minute()) + ":" + 
-                    String(gps.time.second()) + "," +
-                    String(lat, 6) + "," +
-                    String(lng, 6) + "," +
-                    direction + "," +
-                    String(gps.speed.kmph()) + "," +
+                    String(gps.time.second()) + "," + 
+                    String(lat, 6) + "," + 
+                    String(lng, 6) + "," + 
+                    direction + "," + 
+                    String(gps.speed.kmph()) + "," + 
                     speedLimit;
 
       btSerial.println(data);
       Serial.println(data);
-      delay(1000);
+      delay(100);
     }
   }
 }

@@ -76,3 +76,6 @@ Implemented a cache for the speedlimit data. It also saves all the api call resp
 [Guide to NEO-6M GPS Module with Arduino](https://randomnerdtutorials.com/guide-to-neo-6m-gps-module-with-arduino/)
 
 [KitchenSink](https://github.com/mikalhart/TinyGPSPlus/blob/master/examples/KitchenSink/KitchenSink.ino) just about every built-in operation of TinyGPSPlus.
+
+TODO:
+1. Display speed limit on the 7-segment display.
