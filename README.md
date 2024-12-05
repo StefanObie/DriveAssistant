@@ -79,3 +79,9 @@ Implemented a cache for the speedlimit data. It also saves all the api call resp
 
 TODO:
 1. Display speed limit on the 7-segment display.
+2. Allow wifi and bluetooth to be connected at the same time. Currently, bluetooth must be disconnected for the http request to work properly.
+3. Debug message for when gps is not ready on the even minute.
+4. Check directions next to the calculated direction for a speed limit.
+5. Check for speedlimit in json from the start. No need for first items, NavAttributes, etc, separately.
+6. Improve the error handling.
+7. Round the drive speed in terminal output.
