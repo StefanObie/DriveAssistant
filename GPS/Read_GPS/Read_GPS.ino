@@ -14,6 +14,8 @@
 #define MS_DIGIT2 14
 #define MS_DIGIT3 27
 
+#define ONBOARD_LED 2
+
 // Define pins for GPS communication
 const uint32_t GPSBaud = 9600;
 #define GPS_RX_PIN 16
@@ -175,7 +177,7 @@ int getMaxSpeedForDirection(const String& jsonResponse, String& targetDirection)
 }
 
 // Function to get speed limit using HERE API
-String getSpeedLimit(double lat, double lng, String& direction) {
+int getSpeedLimit(double lat, double lng, String& direction) {
   // String url = "https://www.thunderclient.com/welcome";
   String url = constructApiUrl(lat,lng) ;
 
@@ -202,7 +204,7 @@ String getSpeedLimit(double lat, double lng, String& direction) {
       debugPrint(debugLine);
 
       if (result != -1) {
-        return String(result);
+        return result;
       }
 
       debugPrint("[ERROR] JsonParse: Could not extract the speed limit from the json.");
@@ -215,8 +217,33 @@ String getSpeedLimit(double lat, double lng, String& direction) {
     debugPrint("[ERROR] No wifi connection.");
   }
 
-  return "ERROR";
+  return -1;
 }
+
+void displaySpeedlimit(int num) {
+  int mod;
+  while (num >= 10) {
+    mod = num % 10;
+    num /= 10; 
+  }
+
+  digitalWrite(MS_DIGIT0, (num & 0x1));
+  digitalWrite(MS_DIGIT1, (num & 0x2) >> 1);
+  digitalWrite(MS_DIGIT2, (num & 0x4) >> 2);
+  digitalWrite(MS_DIGIT3, (num & 0x8) >> 3);
+
+  if (mod == 0) {
+    digitalWrite(LS_DIGIT_G, HIGH);
+    digitalWrite(LS_DIGIT_CF, LOW);
+  } else if (mod == 2) {
+    digitalWrite(LS_DIGIT_G, LOW); 
+    digitalWrite(LS_DIGIT_CF, HIGH); 
+  } else { // Display 8 - Error
+    digitalWrite(LS_DIGIT_G, LOW); 
+    digitalWrite(LS_DIGIT_CF, LOW); 
+  }
+}
+
 
 void checkBluetoothCommands() {
   if (btSerial.available()) {
@@ -262,12 +289,14 @@ void setup() {
   pinMode(MS_DIGIT1, OUTPUT);
   pinMode(MS_DIGIT2, OUTPUT);
   pinMode(MS_DIGIT3, OUTPUT);
+  pinMode(ONBOARD_LED, OUTPUT);
   digitalWrite(LS_DIGIT_G, HIGH);
   digitalWrite(LS_DIGIT_CF, LOW);
   digitalWrite(MS_DIGIT0, LOW);
   digitalWrite(MS_DIGIT1, LOW);
   digitalWrite(MS_DIGIT2, LOW);
   digitalWrite(MS_DIGIT3, LOW);
+  digitalWrite(ONBOARD_LED, LOW);
 
   // Connect to WiFi
   WiFi.begin(ssid, password);
@@ -287,43 +316,54 @@ void loop() {
     gps.encode(Serial1.read());
   }
 
+
   // Check if GPS time and date are valid
   // if (gps.time.isValid() || gps.date.isValid() || gps.location.isValid()) {
   if (gps.time.isValid() && gps.time.isUpdated() && 
       gps.date.isValid() && gps.date.isUpdated() &&
-      gps.location.isValid() && gps.location.isUpdated()) {
+      gps.location.isValid() && gps.location.isUpdated()
+        ) {
 
-    int currentMinute = gps.time.minute();
-    int currentSecond = gps.time.second();
-
-    // Send data on even minutes
-    if (currentMinute % 2 == 0 && currentSecond == 0) {
+  
+    // Send data just before even minutes
+    if (gps.time.minute() % 2 != 0 && gps.time.second() == 50) {
     // if (currentSecond % 30 == 0) {
+
+      // String debugLine = "[DEBUG] " + String(gps.course.age()) + "," + String(gps.date.year()) + "/" + String(gps.date.month()) + "/" + String(gps.date.day()) + "," + String((gps.time.hour() +2) % 24) + ":" + String(gps.time.minute()) + ":" + String(gps.time.second()) + "\t" + String(gps.location.lat(), 6) + ", " + String(gps.location.lng(), 6);
+      // debugPrint(debugLine);
+
       double lat = gps.location.lat();
       double lng = gps.location.lng();
       double heading = gps.course.deg();
       String direction = getCardinalDirection(heading);
 
       // Get speed limit
-      String speedLimit = getSpeedLimit(lat, lng, direction);
+      int speedLimit = getSpeedLimit(lat, lng, direction);
+      displaySpeedlimit(speedLimit);
+
+      if (speedLimit < gps.speed.kmph()) {
+        digitalWrite(ONBOARD_LED, HIGH);
+      } else {
+        digitalWrite(ONBOARD_LED, LOW);
+      }
 
       // Prepare the data string as a comma-separated list
       String data = String(gps.course.age()) + "," + 
                     String(gps.date.year()) + "/" + 
                     String(gps.date.month()) + "/" + 
                     String(gps.date.day()) + "," + 
-                    String(gps.time.hour()) + ":" + 
+                    String((gps.time.hour() +2) % 24) + ":" + 
                     String(gps.time.minute()) + ":" + 
                     String(gps.time.second()) + "," + 
                     String(lat, 6) + "," + 
                     String(lng, 6) + "," + 
                     direction + "," + 
-                    String(gps.speed.kmph()) + "," + 
-                    speedLimit;
+                    String(gps.speed.kmph(), 0) + "," + 
+                    String(speedLimit);
 
       btSerial.println(data);
       Serial.println(data);
       delay(100);
-    }
+     } 
   }
 }
