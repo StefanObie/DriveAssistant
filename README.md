@@ -84,12 +84,8 @@ TODO:
 4. Check directions next to the calculated direction for a speed limit.
 5. Check for speedlimit in json from the start. No need for first items, NavAttributes, etc, separately.
 6. Improve the error handling.
-<<<<<<< HEAD
-7. Round the drive speed in terminal output.
+<!-- 7. Round the drive speed in terminal output. -->
 
 # Pricing Structure
 ![Here Platform Pricing Structure](img/image.png) \
 *Figure: Here Platform Pricing Structure.*
-=======
-<!-- 7. Round the drive speed in terminal output. -->
->>>>>>> 7159220cf521255e745a6110846f79e52aefeb2d
