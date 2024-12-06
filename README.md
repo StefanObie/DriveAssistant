@@ -85,3 +85,7 @@ TODO:
 5. Check for speedlimit in json from the start. No need for first items, NavAttributes, etc, separately.
 6. Improve the error handling.
 7. Round the drive speed in terminal output.
+
+# Pricing Structure
+![Here Platform Pricing Structure](img/image.png) \
+*Figure: Here Platform Pricing Structure.*
