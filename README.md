@@ -78,14 +78,18 @@ Implemented a cache for the speedlimit data. It also saves all the api call resp
 [KitchenSink](https://github.com/mikalhart/TinyGPSPlus/blob/master/examples/KitchenSink/KitchenSink.ino) just about every built-in operation of TinyGPSPlus.
 
 TODO:
-1. Display speed limit on the 7-segment display.
+<!-- 1. Display speed limit on the 7-segment display. -->
 2. Allow wifi and bluetooth to be connected at the same time. Currently, bluetooth must be disconnected for the http request to work properly.
-3. Debug message for when gps is not ready on the even minute.
+3. Debug message for when gps is not ready on the even minute. Check in the same if as valid gps data.
 4. Check directions next to the calculated direction for a speed limit.
 5. Check for speedlimit in json from the start. No need for first items, NavAttributes, etc, separately.
 6. Improve the error handling.
+<<<<<<< HEAD
 7. Round the drive speed in terminal output.
 
 # Pricing Structure
 ![Here Platform Pricing Structure](img/image.png) \
 *Figure: Here Platform Pricing Structure.*
+=======
+<!-- 7. Round the drive speed in terminal output. -->
+>>>>>>> 7159220cf521255e745a6110846f79e52aefeb2d

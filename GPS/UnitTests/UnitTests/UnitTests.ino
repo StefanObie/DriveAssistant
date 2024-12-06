@@ -1,46 +1,60 @@
-#include <WiFi.h>
-#include <HTTPClient.h>
+// Define the pins for the 7-segment decoder
+#define MS_DIGIT0 12
+#define MS_DIGIT1 13
+#define MS_DIGIT2 14
+#define MS_DIGIT3 27
 
-// Replace with your network credentials
-const char* ssid = "";
-const char* password = "";
+#define LS_DIGIT_G 33
+#define LS_DIGIT_CF 32
 
-// Replace with the URL of the server you want to request
-const char* serverURL = "";
+int number;
 
 void setup() {
   Serial.begin(115200);
-  WiFi.begin(ssid, password);
+  // Initialize the pins as output
+  pinMode(MS_DIGIT0, OUTPUT);
+  pinMode(MS_DIGIT1, OUTPUT);
+  pinMode(MS_DIGIT2, OUTPUT);
+  pinMode(MS_DIGIT3, OUTPUT);
+  pinMode(LS_DIGIT_G, OUTPUT);
+  pinMode(LS_DIGIT_CF, OUTPUT);
 
-  // Wait for WiFi connection
-  Serial.print("Connecting to WiFi");
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("\nWiFi connected.");
+  number = 80; // Replace with the desired number to test
 }
 
 void loop() {
-  if (WiFi.status() == WL_CONNECTED) { // Check WiFi connection status
-    HTTPClient http;
+  // Serial.println(String(number));
+  displaySpeedlimit(number);
 
-    Serial.println("Sending HTTP GET request...");
-    http.begin(serverURL); // Specify the URL
-    int httpResponseCode = http.GET(); // Send the GET request
-
-    if (httpResponseCode > 0) { // Check for the returning code
-      String payload = http.getString();
-      Serial.println("HTTP Response Code: " + String(httpResponseCode));
-      Serial.println("Response Payload: " + payload);
-    } else {
-      Serial.println("Error on sending request: " + String(httpResponseCode));
-    }
-
-    http.end(); // Free resources
-  } else {
-    Serial.println("WiFi not connected!");
+  number += 10 ;
+  if (number == 130) {
+    number = 60;
   }
 
-  delay(10000); // Send a request every
+  delay(3000); // Add a delay for testing purposes
+}
+
+// Function to get the most significant digit of a number
+void displaySpeedlimit(int num) {
+  int mod;
+  while (num >= 10) {
+    mod = num % 10;
+    num /= 10; 
+  }
+
+  digitalWrite(MS_DIGIT0, (num & 0x1));
+  digitalWrite(MS_DIGIT1, (num & 0x2) >> 1);
+  digitalWrite(MS_DIGIT2, (num & 0x4) >> 2);
+  digitalWrite(MS_DIGIT3, (num & 0x8) >> 3);
+
+  if (mod == 0) {
+    digitalWrite(LS_DIGIT_G, HIGH);
+    digitalWrite(LS_DIGIT_CF, LOW);
+  } else if (mod == 2) {
+    digitalWrite(LS_DIGIT_G, LOW); 
+    digitalWrite(LS_DIGIT_CF, HIGH); 
+  } else { // Display 8 - Error
+    digitalWrite(LS_DIGIT_G, LOW); 
+    digitalWrite(LS_DIGIT_CF, LOW); 
+  }
 }
