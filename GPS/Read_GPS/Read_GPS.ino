@@ -25,12 +25,14 @@ const uint32_t GPSBaud = 9600;
 const char* ssid = WIFI_SSID;
 const char* password = WIFI_PASSWORD;
 const String apiKey = HERE_API_KEY;
-bool debuggingEnabled = true;
 
+// Global Variables
+bool debuggingEnabled = true;
+unsigned long lastMillis = 0;
 TinyGPSPlus gps;
 BluetoothSerial btSerial;
 
-const String jsonResponseWork = R"({
+const String jsonResponse_Work = R"({
     "items": [
         {
             "title": "Sonae House, Sandton, 2191, South Africa",
@@ -78,7 +80,7 @@ const String jsonResponseWork = R"({
     ]
 })";
 
-const String jsonResponse = R"({
+const String jsonResponse_WierdaRoad = R"({
         "items": [
             {
                 "title": "Wierda Rd, Tshwane, 0137, South Africa",
@@ -118,15 +120,18 @@ String constructApiUrl(double lat, double lng) {
   const String baseUrl = "https://revgeocode.search.hereapi.com/v1/revgeocode";
 
   String params = "?at=" + String(lat, 6) + "," + String(lng, 6) + ",50" +  //at={lat},{lng},{radius=50}
-                  "&maxResults=" + "1" + "&apiKey=" + apiKey + "&showNavAttributes=" + "speedLimits" + "&types=" + "street";
+                  "&maxResults=" + "1" + 
+                  "&apiKey=" + apiKey + 
+                  "&showNavAttributes=" + "speedLimits" + 
+                  "&types=" + "street";
 
   return baseUrl + params;
 }
 
-int getMaxSpeedForDirection(const String& jsonResponse, String& targetDirection) {
+int getMaxSpeedForDirection(const String& jsonResponse_WierdaRoad, String& targetDirection) {
   // Parse the JSON response
   StaticJsonDocument<2048> doc;
-  DeserializationError error = deserializeJson(doc, jsonResponse);
+  DeserializationError error = deserializeJson(doc, jsonResponse_WierdaRoad);
 
   if (error) {
     String debugLine = "[ERROR] JSON deserialization failed: " + String(error.c_str());
@@ -172,7 +177,7 @@ int getMaxSpeedForDirection(const String& jsonResponse, String& targetDirection)
     return fallbackSpeed;
   }
 
-  debugPrint("[ERROR] End reached with no speed limit, getMaxSpeedForDirection.");
+  debugPrint("[ERROR] End of getMaxSpeedForDirection reached with no speed limit.");
   return -1;
 }
 
@@ -184,40 +189,39 @@ int getSpeedLimit(double lat, double lng, String& direction) {
   String debugLine = "[DEBUG] URL: " + url;
   debugPrint(debugLine);
 
-  if (WiFi.status() == WL_CONNECTED) {
-    HTTPClient http;
-    http.begin(url);
-    int httpCode = http.GET();
-
-    debugLine = "[DEBUG] httpCode: " + String(httpCode);
-    debugPrint(debugLine);
-
-    if (httpCode == 200) {
-      String payload = http.getString();
-      // String payload = jsonResponse ;
-      // String payload = jsonResponseWork;
-      debugPrint(payload);
-      http.end();
-
-      int result = getMaxSpeedForDirection(payload, direction);
-      debugLine = "[DEBUG] getMaxSpeedForDirection Result = " + String(result);
-      debugPrint(debugLine);
-
-      if (result != -1) {
-        return result;
-      }
-
-      debugPrint("[ERROR] JsonParse: Could not extract the speed limit from the json.");
-
-    } else {
-      http.end();
-      debugPrint("[ERROR] HTTP GET Failed: Could not fetching speed limit.");
-    }
-  } else {
+  if (WiFi.status() != WL_CONNECTED) {
     debugPrint("[ERROR] No wifi connection.");
+    return -1;
+  };
+
+  HTTPClient http;
+  http.begin(url);
+  int httpCode = http.GET();
+
+  debugLine = "[DEBUG] httpReturnCode: " + String(httpCode);
+  debugPrint(debugLine);
+
+  if (httpCode != 200) {
+    http.end();
+    debugPrint("[ERROR] HTTP GET Failed: Could not fetching speed limit.");
+    return -1;
   }
 
-  return -1;
+  String payload = http.getString();
+  // String payload = jsonResponse_WierdaRoad ;
+  // String payload = jsonResponse_Work;
+  debugPrint(payload);
+  http.end();
+
+  int result = getMaxSpeedForDirection(payload, direction);
+  debugLine = "[DEBUG] getMaxSpeedForDirection result = " + String(result);
+  debugPrint(debugLine);
+
+  if (result == -1) {
+    debugPrint("[ERROR] JsonParse: Could not extract the speed limit from the json.");
+    return -1;
+  }
+  return result;
 }
 
 void displaySpeedlimit(int num) {
@@ -263,26 +267,23 @@ void checkBluetoothCommands() {
 }
 
 void setup() {
-  // Begin Serial communication for debugging
+  // USB Serial Communication
   Serial.begin(115200);
-  debugPrint("Initializing...");
+  debugPrint("[SETUP] Initializing...");
 
-  // Begin GPS communication
+  // GPS Communication
   Serial1.begin(GPSBaud, SERIAL_8N1, GPS_RX_PIN, GPS_TX_PIN);
-  debugPrint("GPS module initialized.");
+  debugPrint("[SETUP] GPS module initialized.");
 
-  // Begin Bluetooth communication
-  if (!btSerial.begin("ESP32")) {  // Set Bluetooth device name
-    debugPrint("Bluetooth initialization failed!");
+  // Bluetooth Communication
+  if (!btSerial.begin("ESP32")) {  // Bluetooth Device Name
+    debugPrint("[SETUP] Bluetooth initialization failed!");
     while (1)
       ;  // Stay here in case of Bluetooth failure
   }
-  debugPrint("Bluetooth initialized. Waiting for connections...");
+  debugPrint("[SETUP] Bluetooth initialized. Waiting for connections...");
 
-  // Begin GPS communication
-  debugPrint("GPS module initialized.");
-
-  // Digital Output pin setup and init
+  // Digital Output Pin Setup and Initialization
   pinMode(LS_DIGIT_G, OUTPUT);
   pinMode(LS_DIGIT_CF, OUTPUT);
   pinMode(MS_DIGIT0, OUTPUT);
@@ -298,14 +299,14 @@ void setup() {
   digitalWrite(MS_DIGIT3, LOW);
   digitalWrite(ONBOARD_LED, LOW);
 
-  // Connect to WiFi
+  // WiFi Connection
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    debugPrint("Connecting to WiFi...");
+    delay(5000);
+    debugPrint("[SETUP] Connecting to WiFi...");
   }
-  debugPrint("Connected to WiFi.");
-  debugPrint("[DEBUG] Setup Completed.");
+  debugPrint("[SETUP] Connected to WiFi.");
+  debugPrint("[SETUP] Setup Completed.");
 }
 
 void loop() {
@@ -318,12 +319,9 @@ void loop() {
 
 
   // Check if GPS time and date are valid
-  // if (gps.time.isValid() || gps.date.isValid() || gps.location.isValid()) {
   if (gps.time.isValid() && gps.time.isUpdated() && 
       gps.date.isValid() && gps.date.isUpdated() &&
-      gps.location.isValid() && gps.location.isUpdated()
-        ) {
-
+      gps.location.isValid() && gps.location.isUpdated()) {
   
     // Send data just before even minutes
     if (gps.time.minute() % 2 != 0 && gps.time.second() == 50) {
@@ -365,5 +363,12 @@ void loop() {
       Serial.println(data);
       delay(100);
      } 
+  } // GPS Data not ready yet.
+  else if ((millis() - lastMillis) > 5000) {
+    lastMillis = millis(); 
+    debugPrint("[DEBUG] GPS time and date are not valid yet.");
+    String data = String(gps.date.value()) + "," +
+                  String(gps.time.value());
+    debugPrint(data);
   }
 }
