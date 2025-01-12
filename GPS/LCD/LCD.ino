@@ -1,15 +1,24 @@
 #include <TinyGPS++.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
-#include <ArduinoJson.h>
+// #include <ArduinoJson.h>
+#include <regex.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include "config.h"
 
 // Define pins for GPS communication
 const uint32_t GPSBaud = 9600;
+#define GPS_LOW 4
 #define GPS_RX_PIN 16
 #define GPS_TX_PIN 17
+#define GPS_HIGH 5
+TinyGPSPlus gps;
+
+// LCD
+#define LCD_HIGH 19 
+#define LCD_LOW 18
+LiquidCrystal_I2C lcd(0x27, 20, 4); 
 
 // config.h
 const char* ssid = WIFI_SSID;
@@ -18,58 +27,9 @@ const String apiKey = HERE_API_KEY;
 
 // Global Variables
 #define ONBOARD_LED 2
-bool debuggingEnabled = true;
 unsigned long lastMillis = 0;
-TinyGPSPlus gps;
-LiquidCrystal_I2C lcd(0x27, 20, 4); 
 
-const String jsonResponse_Work = R"({
-    "items": [
-        {
-            "title": "Sonae House, Sandton, 2191, South Africa",
-            "id": "here:af:streetsection:3vZcFpKVTtbYw0MuaE24KD",
-            "resultType": "street",
-            "address": {
-                "label": "Sonae House, Sandton, 2191, South Africa",
-                "countryCode": "ZAF",
-                "countryName": "South Africa",
-                "state": "Gauteng",
-                "county": "Johannesburg",
-                "city": "Sandton",
-                "district": "The Woodlands",
-                "street": "Sonae House",
-                "postalCode": "2191"
-            },
-            "position": {
-                "lat": -26.05849,
-                "lng": 28.08845
-            },
-            "distance": 100,
-            "mapView": {
-                "west": 28.08845,
-                "south": -26.05849,
-                "east": 28.0892,
-                "north": -26.05839
-            },
-            "navigationAttributes": {
-                "speedLimits": [
-                    {
-                        "maxSpeed": 20,
-                        "direction": "W",
-                        "speedUnit": "kph",
-                        "source": "derived"
-                    },
-                    {
-                        "maxSpeed": 20,
-                        "direction": "E",
-                        "speedUnit": "kph",
-                        "source": "derived"
-                    }
-                ]
-            }
-        }
-    ]
-})";
+const String jsonResponse_Work = R"({"items":[{"title":"Sonae House, Sandton, 2191, South Africa","navigationAttributes":{"speedLimits":[{"maxSpeed":20,"direction":"W","speedUnit":"kph","source":"derived"},{"maxSpeed":20,"direction":"E","speedUnit":"kph","source":"derived"}]}}]})";
 
 const String jsonResponse_WierdaRoad = R"({
         "items": [
@@ -93,12 +53,6 @@ const String jsonResponse_WierdaRoad = R"({
         ]
     })";
 
-void debugPrint(const String& debugLine) {
-  if (debuggingEnabled) {
-    Serial.println(debugLine);
-  }
-}
-
 // Function to convert degrees to cardinal direction
 String getCardinalDirection(double heading) {
   const char* directions[] = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
@@ -115,31 +69,32 @@ String constructApiUrl(double lat, double lng) {
                   "&showNavAttributes=" + "speedLimits" + 
                   "&types=" + "street";
 
+  // Serial.printf("[DEBUG] URL: %s\n", baseUrl + params);
+  Serial.println("[DEBUG] URL: " + baseUrl + params);
   return baseUrl + params;
 }
 
-int getMaxSpeedForDirection(const String& jsonResponse_WierdaRoad, String& targetDirection) {
+int getMaxSpeedForDirection(const String& jsonResponse, String targetDirection) {
   // Parse the JSON response
   StaticJsonDocument<2048> doc;
-  DeserializationError error = deserializeJson(doc, jsonResponse_WierdaRoad);
+  DeserializationError error = deserializeJson(doc, jsonResponse);
 
   if (error) {
-    String debugLine = "[ERROR] JSON deserialization failed: " + String(error.c_str());
-    debugPrint(debugLine) ;
+    Serial.printf("[ERROR] JSON deserialization failed: %s\n", error.c_str());
     return -1;
   }
 
   // Navigate through the JSON structure
   JsonArray items = doc["items"];
   if (items.isNull()) {
-    debugPrint("[ERROR] No items found in JSON response.");
+    Serial.printf("[ERROR] No items found in JSON response.\n");
     return -1;
   }
 
   for (JsonObject item : items) {
     JsonArray speedLimits = item["navigationAttributes"]["speedLimits"];
     if (speedLimits.isNull()) {
-      debugPrint("[ERROR] No speed limits found.");
+      Serial.printf("[ERROR] No speed limits found.\n");
       return -1;
     }
 
@@ -149,75 +104,66 @@ int getMaxSpeedForDirection(const String& jsonResponse_WierdaRoad, String& targe
       String direction = speedLimit["direction"].as<String>();
       int maxSpeed = speedLimit["maxSpeed"].as<int>();
 
-      String debugLine = "[DEBUG] Direction: " + direction + ", maxSpeed: " + String(maxSpeed);
-      debugPrint(debugLine);
+      Serial.printf("[DEBUG] Direction: %s, maxSpeed: %d\n", direction, maxSpeed);
 
       if (fallbackSpeed > maxSpeed) {
-        //Fallback speed is the min of all speed limits found
-        fallbackSpeed = maxSpeed;
+        fallbackSpeed = maxSpeed; // Fallback speed is the min of all speed limits found
+        Serial.printf("[DEBUG] fallbackSpeed in if: %d\n", fallbackSpeed);
       }
 
       if (direction == targetDirection) {
+        Serial.printf("[DEBUG] maxSpeed: %d\n", maxSpeed);
         return maxSpeed;  // Return the maxSpeed for the matching direction
       }
     }
-    String debugLine = "[DEBUG] No matching direction found, using fallback speed: " + String(fallbackSpeed) + " km/h.";
-    debugPrint(debugLine);
 
+    Serial.printf("[DEBUG] No matching direction found, using fallback speed: %s km/h.\n", fallbackSpeed);
     return fallbackSpeed;
   }
 
-  debugPrint("[ERROR] End of getMaxSpeedForDirection reached with no speed limit.");
+  Serial.printf("[ERROR] End of getMaxSpeedForDirection reached with no speed limit.\n");
   return -1;
 }
 
 // Function to get speed limit using HERE API
 int getSpeedLimit(double lat, double lng, String& direction) {
   // String url = "https://www.thunderclient.com/welcome";
-  String url = constructApiUrl(lat,lng) ;
-
-  String debugLine = "[DEBUG] URL: " + url;
-  debugPrint(debugLine);
+  String url = constructApiUrl(lat, lng) ;
+  Serial.printf("[DEBUG] URL: %s\n", url.c_str());
 
   if (WiFi.status() != WL_CONNECTED) {
-    debugPrint("[ERROR] No wifi connection.");
+    Serial.printf("[ERROR] No wifi connection.\n");
     return -1;
   };
 
-  HTTPClient http;
+  // HTTPClient http;
   // http.begin(url);
   // int httpCode = http.GET();
-
-  // debugLine = "[DEBUG] httpReturnCode: " + String(httpCode);
-  // debugPrint(debugLine);
+  // Serial.printf("[DEBUG] httpReturnCode: %d\n", httpCode);
 
   // if (httpCode != 200) {
   //   http.end();
-  //   debugPrint("[ERROR] HTTP GET Failed: Could not fetching speed limit.");
+  //   Serial.printf("[ERROR] HTTP GET Failed: Could not fetching speed limit.\n");
   //   return -1;
   // }
 
   // String payload = http.getString();
-  String payload = jsonResponse_WierdaRoad ;
-  // String payload = jsonResponse_Work;
-  debugPrint(payload);
-  http.end();
+  // http.end();
+  // String payload = jsonResponse_WierdaRoad ;
+  const String payload = jsonResponse_Work;
+  Serial.println(payload);
 
   int result = getMaxSpeedForDirection(payload, direction);
-  debugLine = "[DEBUG] getMaxSpeedForDirection result = " + String(result);
-  debugPrint(debugLine);
+  Serial.printf("[DEBUG] getMaxSpeedForDirection result = %d\n", result);
 
   if (result == -1) {
-    debugPrint("[ERROR] JsonParse: Could not extract the speed limit from the json.");
+    Serial.printf("[ERROR] JsonParse: Could not extract the speed limit from the json.\n");
     return -1;
   }
   return result;
 }
 
 void displayLCD(int speedLimit, String direction) {
-  String debugLine = "[DEBUG] LCD: Speed " + String(gps.speed.kmph()) + " with speedLimit " + speedLimit; 
-  debugPrint(debugLine);
-
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.printf("Speed %3.0f / %-3d km/h", gps.speed.kmph(), speedLimit);
@@ -251,30 +197,37 @@ void updateLCD() {
 void setup() {
   // USB Serial Communication
   Serial.begin(115200);
-  debugPrint("[SETUP] Initializing...");
+  Serial.printf("[SETUP] Initializing...\n");
 
   // GPS Communication
   Serial1.begin(GPSBaud, SERIAL_8N1, GPS_RX_PIN, GPS_TX_PIN);
-  debugPrint("[SETUP] GPS module initialized.");
+  Serial.printf("[SETUP] GPS module initialized.\n");
+
+  // Digital Output Pin Setup and Initialization
+  pinMode(ONBOARD_LED, OUTPUT);
+  pinMode(GPS_HIGH, OUTPUT);
+  pinMode(GPS_LOW, OUTPUT);
+  pinMode(LCD_HIGH, OUTPUT);
+  pinMode(LCD_LOW, OUTPUT);
+  digitalWrite(ONBOARD_LED, LOW);
+  digitalWrite(GPS_HIGH, HIGH);
+  digitalWrite(GPS_LOW, LOW);
+  digitalWrite(LCD_HIGH, HIGH);
+  digitalWrite(LCD_LOW, LOW);
 
   // LCD
   lcd.init();
   lcd.backlight();
-  displayLCD(0, "X");
-  debugPrint("[SETUP] LCD initialized.");
-
-  // Digital Output Pin Setup and Initialization
-  pinMode(ONBOARD_LED, OUTPUT);
-  digitalWrite(ONBOARD_LED, LOW);
+  Serial.printf("[SETUP] LCD initialized.\n");
 
   // WiFi Connection
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(5000);
-    debugPrint("[SETUP] Connecting to WiFi...");
+    Serial.printf("[SETUP] Connecting to WiFi...\n");
   }
-  debugPrint("[SETUP] Connected to WiFi.");
-  debugPrint("[SETUP] Setup Completed.");
+  Serial.printf("[SETUP] Connected to WiFi.\n");
+  Serial.printf("[SETUP] Setup Completed.\n");
 }
 
 void loop() {
@@ -289,12 +242,8 @@ void loop() {
       gps.location.isValid() && gps.location.isUpdated()) {
   
     // Send data just before even minutes
-    if (gps.time.minute() % 2 != 0 && gps.time.second() == 50) {
-    // if (currentSecond % 30 == 0) {
-
-      // String debugLine = "[DEBUG] " + String(gps.course.age()) + "," + String(gps.date.year()) + "/" + String(gps.date.month()) + "/" + String(gps.date.day()) + "," + String((gps.time.hour() +2) % 24) + ":" + String(gps.time.minute()) + ":" + String(gps.time.second()) + "\t" + String(gps.location.lat(), 6) + ", " + String(gps.location.lng(), 6);
-      // debugPrint(debugLine);
-
+    // if (gps.time.minute() % 2 == 1 && gps.time.second() == 50) {
+    if (gps.time.second() % 30 == 0) {
       double lat = gps.location.lat();
       double lng = gps.location.lng();
       double heading = gps.course.deg();
@@ -330,6 +279,11 @@ void loop() {
   }
   else if ((millis() - lastMillis) > 500) {
     lastMillis = millis(); 
-    updateLCD(); 
+    if (gps.time.isValid() && gps.date.isValid() && gps.location.isValid()) {
+      updateLCD(); 
+    } else {
+      lcd.setCursor(0, 0);
+      lcd.print("GPS not ready yet!") ;
+    }
   }
 }
