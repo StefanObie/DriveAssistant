@@ -252,11 +252,17 @@ void loop() {
     displayLCD(); 
   } 
   
-  if ((millis() - lastMillisLongTimer) > 20000) { //20s
+  if ((millis() - lastMillisLongTimer) > 30000) { //30s
     lastMillisLongTimer = millis();
-    lcd_message = "" ;
     lcd.clear();
     Serial.printf("[DEBUG] LCD cleared.\n") ;
+
+    if (lcd_message != "") {
+      street = "" ;
+      district = "" ;
+      direction = "" ;
+    }
+    lcd_message = "" ;
 
     if (!gps.time.isValid() && !gps.date.isValid() && !gps.location.isValid()) {
       lcd_message = "No GPS Signal Yet!" ;
