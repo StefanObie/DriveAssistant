@@ -55,6 +55,12 @@ String constructApiUrl(double lat, double lng) {
 }
 
 String postRequest(String url) {
+  // Try to connect to wifi 
+  if (WiFi.status() != WL_CONNECTED) {
+    WiFi.disconnect() ;
+    WiFi.begin(ssid, password);
+  }
+
   if (WiFi.status() != WL_CONNECTED) {
     Serial.printf("[ERROR] No wifi connection.\n");
     lcd_message = "No WiFi Connection";
@@ -162,7 +168,7 @@ void displayLCD() {
     gps.date.day(), 
     gps.date.month(), 
     (WiFi.status() == WL_CONNECTED) ? "WiFi" : "", 
-    direction,                                      
+    direction, //TODO: make time +2                                     
     (1 - (gps.time.minute() % 2) == 1) ? "1m" : "", 
     60 - (gps.time.second())
   );                        
@@ -242,6 +248,12 @@ void loop() {
 
       delay(100);
 
+      // Error Occured
+      if (speedLimit == -1) { 
+        street = "" ;
+        district = "" ;
+        direction = "" ;
+      }
       // Ensure the error messages are displayed for Long Timer seconds
       lastMillisLongTimer = millis(); 
     } 
@@ -252,19 +264,14 @@ void loop() {
     displayLCD(); 
   } 
   
-  if ((millis() - lastMillisLongTimer) > 30000) { //30s
+  if ((millis() - lastMillisLongTimer) > 50000) { //50s
     lastMillisLongTimer = millis();
     lcd.clear();
     Serial.printf("[DEBUG] LCD cleared.\n") ;
 
-    if (lcd_message != "") {
-      street = "" ;
-      district = "" ;
-      direction = "" ;
-    }
-    lcd_message = "" ;
-
-    if (!gps.time.isValid() && !gps.date.isValid() && !gps.location.isValid()) {
+    if (gps.time.isValid() && gps.date.isValid() && gps.location.isValid()) {
+      lcd_message = "" ;
+    } else {
       lcd_message = "No GPS Signal Yet!" ;
     }
 
