@@ -362,7 +362,7 @@ void loop() {
       btSerial.println(data);
       Serial.println(data);
       delay(100);
-     } 
+    } 
   } // GPS Data not ready yet.
   else if ((millis() - lastMillis) > 5000) {
     lastMillis = millis(); 

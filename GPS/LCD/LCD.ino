@@ -154,7 +154,7 @@ void displayLCD() {
 
   //Street Title
   lcd.setCursor(0, 1);
-  lcd.printf("%-20s", street);
+  lcd.printf("%-20s", street.c_str());
 
   //User feedback
   lcd.setCursor(0, 2);
@@ -168,7 +168,7 @@ void displayLCD() {
     gps.date.day(), 
     gps.date.month(), 
     (WiFi.status() == WL_CONNECTED) ? "WiFi" : "", 
-    direction, //TODO: make time +2                                     
+    direction.c_str(), //TODO: make time +2                                     
     (1 - (gps.time.minute() % 2) == 1) ? "1m" : "", 
     60 - (gps.time.second())
   );                        
@@ -273,6 +273,7 @@ void loop() {
       lcd_message = "" ;
     } else {
       lcd_message = "No GPS Signal Yet!" ;
+      Serial.printf("[DEBUG] No GPS Signal Yet!\n") ;
     }
 
     if (WiFi.status() != WL_CONNECTED) {
