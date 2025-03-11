@@ -35,11 +35,11 @@ The DQ Mapper for C and S works most of the time. I can use the DQ Mapper of the
 [HERE Technologies](https://developer.here.com/) offers a comprehensive platform for building location-based applications. The HERE Platform provides APIs and SDKs for geolocation services such as mapping, routing, geocoding, traffic data, and road attributes. With global coverage and high accuracy, developers can integrate rich location intelligence into their applications, including:
 - Reverse Geocoding API: Converts coordinates into readable addresses.
 
-This API returns the speed limit of the road. The speed limit is in the `speedLimits` field. The API is free and has a limit of 30,000 requests per month. 
+This API returns the speed limit of the road. The speed limit is in the `speedLimits` field. The API is free and has a limit of 2,500 requests per month. 
 
-$$\frac{30 000 \text{ calls}}{1 \text{ month}} \times \frac{2 \text{ min}}{1 \text{ call}} \times \frac{1 \text{ hour}}{60 \text{ min}} = \frac{1000 \text{ hours}}{1 \text{ month}}$$
+$$\frac{2 500 \text{ calls}}{1 \text{ month}} \times \frac{2 \text{ min}}{1 \text{ call}} \times \frac{1 \text{ h}}{60 \text{ min}} = \frac{83\text{h}\; 20\text{min}}{1 \text{ month}}$$
 
-Usage limits will most likely not be exceeded. 1000 hours of usage per month is equivalent to 1 request every 2 minutes.
+Usage limits will most likely not be exceeded. 83 hours of usage per month is equivalent to 1 request every 2 minutes.
 
 The full docs can be found [here](https://developer.here.com/documentation/geocoding-search-api/dev_guide/topics/endpoint-reverse-geocode-brief.html).
 
@@ -47,7 +47,7 @@ New API:
 
 ```
 https://revgeocode.search.hereapi.com/v1/revgeocode?
-at=-24.89823311476949,28.216293154714478,50&maxResults=1&
+at=-24.XXXX,28.XXXX,50&maxResults=1&
 apiKey=XXXd0M&showNavAttributes=speedLimits&types=street
 ```
 
