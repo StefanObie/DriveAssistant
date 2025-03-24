@@ -2,7 +2,8 @@
 
 Get the driving speed limit of the current road every 2 minutes.
 
-TODO: Add Image of Box.
+![The Drive Assistant in Action](img/FinalDevice.jpg) \
+*Figure: The Drive Assistant in Action.*
 
 ## Problem
 
@@ -59,10 +60,16 @@ The ESP32, LCD screen, and the GPS module were soldered onto veroboard. The vero
 
 ## Considerations and Future Directions 
 
+### How to Run
+1. Wire the ESP32, NEO-6M GPS module, and the LCD as shown in the VeroRoute Layout.
+2. Add the config variables (`WIFI_SSID`, `WIFI_PASSWORD`, `HERE_API_KEY`) to `config.h`.
+3. Flash the ESP32. Use the "Hugh app (3MB no OTA/ 1MB SPIFFS)" partitioning scheme.
+4. Wait for the GPS module to get signal and connect the ESP32 to the mobile hotspot. It should not take longer than 5 min to get GPS signal.
+
 ### Restrictions
 The free tier of the HERE API restricts the usage to 83 hours and 20 minutes of operational time per month, given the API is called every 2 minutes.
 
-$$\frac{2 500 \text{ calls}}{1 \text{ month}} \times \frac{2 \text{ min}}{1 \text{ call}} \times \frac{1 \text{ h}}{60 \text{ min}} = \frac{83\text{h}\; 20\text{min}}{1 \text{ month}}$$
+$$\frac{2 500 \text{ calls}}{1 \text{ month}} \times \frac{2 \text{ min}}{1 \text{ call}} \times \frac{1 \text{ h}}{60 \text{ min}} = \frac{83\text{h } 20\text{min}}{1 \text{ month}}$$
 
 ### Alternatives
 Waze and other similar map providers already display the current speed of the vehicle and the speed limit. However, the downside of these apps is that they consume a lot of mobile data and drain the battery quickly, as the screen needs to remain on continuously.
