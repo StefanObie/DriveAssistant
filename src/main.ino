@@ -18,7 +18,7 @@ TinyGPSPlus gps;
 #define LCD_HIGH 19 
 #define LCD_LOW 18
 LiquidCrystal_I2C lcd(0x27, 20, 4); 
-String lcd_message = "";
+char lcd_message[20] = "";
 
 // config.h
 const char* ssid = WIFI_SSID;

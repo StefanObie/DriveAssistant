@@ -89,3 +89,34 @@ TODO:
 # Pricing Structure
 ![Here Platform Pricing Structure](img/image.png) \
 *Figure: Here Platform Pricing Structure.*
+
+# Thu 3 Apr 2025
+
+How to convert string to char array in C++? - [StackOverflow](https://stackoverflow.com/questions/13294067/how-to-convert-string-to-char-array-in-c).
+
+[Online C Compiler](https://www.programiz.com/c-programming/online-compiler/)
+```
+#include <string.h>
+int main() {
+    char lcd_message[20] = "";
+    strncpy(lcd_message, "Change the string to this line up to 20 chars!", 20);
+    strcpy(lcd_message, "Change the string t") //If dest overflows, it will shortdump.
+    printf(lcd_message);
+    return 0;
+}
+```
+
+Own custom function to perform the same functionality from [tutorialspoint](https://www.tutorialspoint.com/c_standard_library/c_function_strncpy.htm).
+```
+void customStrncpy(char* dest, const char* src, size_t n) {
+   size_t i;
+   for (i = 0; i < n && src[i] != '\0'; i++) {
+        dest[i] = src[i];
+   }
+   
+   while (i < n) { // Fill remaining characters with null terminators
+       dest[i] = '\0'; 
+       i++;
+   }
+}
+```
