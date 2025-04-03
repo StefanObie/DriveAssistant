@@ -32,7 +32,6 @@ short speedLimit = 0;
 String direction = "" ;
 String district = "" ;
 String street = "" ;
-// bool fallbackSpeedUsed = false;
 
 // Function to convert degrees to cardinal direction
 String getCardinalDirection(double heading) {
@@ -41,14 +40,15 @@ String getCardinalDirection(double heading) {
   return String(directions[index]);
 }
 
-String constructApiUrl(double lat, double lng) {
+String constructApiUrl(double lat, double lng, double deg) {
   const String baseUrl = "https://revgeocode.search.hereapi.com/v1/revgeocode";
 
   String params = "?at=" + String(lat, 6) + "," + String(lng, 6) + ",50" +  //at={lat},{lng},{radius=50}
                   "&maxResults=" + "1" + 
                   "&apiKey=" + apiKey + 
                   "&showNavAttributes=" + "speedLimits" + 
-                  "&types=" + "street";
+                  "&types=" + "street" + 
+                  "&bearing=" + String((int)deg);
 
   Serial.printf("[DEBUG] URL: %s%s\n", baseUrl.c_str(), params.c_str());
   return baseUrl + params;
@@ -75,7 +75,7 @@ String postRequest(String url) {
   if (httpCode != 200) {
     http.end();
     Serial.printf("[ERROR] HTTP GET Failed: Could not fetching speed limit.\n");
-    lcd_message = "Post request failed";
+    lcd_message = "POST Request Failed";
     return "";
   }
 
@@ -109,6 +109,7 @@ short getMaxSpeedForDirection(const String& jsonResponse) {
     JsonArray address = item["address"];
     street = item["address"]["street"].as<String>();
     district = item["address"]["district"].as<String>();
+    if (district == "null") district = "";
     Serial.printf("[DEBUG] Street %s, District %s\n", street, district);
 
     //SpeedLimit Processing
@@ -120,8 +121,6 @@ short getMaxSpeedForDirection(const String& jsonResponse) {
 
     // Iterate through speed limits
     short fallbackSpeed = 999;
-    // fallbackSpeedUsed = false;
-    //TODO: Check for direction next to the target direction too. Look into array of char pointers.
     for (JsonObject jsonSpeedLimit : jsonSpeedLimits) {
       String jsonDirection = jsonSpeedLimit["direction"].as<String>();
       short maxSpeed = jsonSpeedLimit["maxSpeed"].as<short>();
@@ -135,7 +134,6 @@ short getMaxSpeedForDirection(const String& jsonResponse) {
     }
 
     Serial.printf("[DEBUG] No matching jsonDirection found, using fallback speed: %d km/h.\n", fallbackSpeed);
-    // fallbackSpeedUsed = true;
     return fallbackSpeed;
   }
 
@@ -149,7 +147,6 @@ void displayLCD() {
   lcd.printf("Speed %3.0f / %-3d km/h",
     gps.speed.kmph(), 
     speedLimit
-    // (fallbackSpeedUsed ? "°" : "")
   );
 
   //Street Title
@@ -163,12 +160,13 @@ void displayLCD() {
   );
 
   //Date & Time, Wifi Status and Direction
+  direction = getCardinalDirection(gps.course.deg());
   lcd.setCursor(0, 3);
   lcd.printf("%02d-%02d %4s  %2s %2s%02ds", 
     gps.date.day(), 
     gps.date.month(), 
     (WiFi.status() == WL_CONNECTED) ? "WiFi" : "", 
-    direction.c_str(), //TODO: make time +2                                     
+    direction.c_str(),                                  
     (1 - (gps.time.minute() % 2) == 1) ? "1m" : "", 
     60 - (gps.time.second())
   );                        
@@ -214,7 +212,7 @@ void loop() {
     gps.encode(Serial1.read());
   }
 
-  // Check if GPS time and date are valid
+  // Check if GPS is valid
   if (gps.time.isValid() && gps.time.isUpdated() && 
       gps.date.isValid() && gps.date.isUpdated() &&
       gps.location.isValid() && gps.location.isUpdated()) {
@@ -222,16 +220,18 @@ void loop() {
     // Send data just before even minutes
     if (gps.time.minute() % 2 == 1 && gps.time.second() == 50) {
     // if (gps.time.second() % 30 == 0) {
+      lcd_message = "" ;
       double lat = gps.location.lat();
       double lng = gps.location.lng();
-      direction = getCardinalDirection(gps.course.deg());
+      double deg = gps.course.deg();
+      direction = getCardinalDirection(deg);
 
       // Get speed limit
-      String url = constructApiUrl(lat, lng);
+      String url = constructApiUrl(lat, lng, deg);
       String response_payload = postRequest(url);
       speedLimit = getMaxSpeedForDirection(response_payload);
 
-      Serial.printf("%d, %02d/%02d/%02d, %02d:%02d:%02d, (%.6f, %.6f), %s, %.0f, %d\n",
+      Serial.printf("%d, %02d/%02d/%02d, %02d:%02d:%02d, (%.6f, %.6f), %s (%.0f), %.0f, %d\n",
         gps.course.age(),
         gps.date.year(),
         gps.date.month(),
@@ -242,6 +242,7 @@ void loop() {
         lat,
         lng,
         direction,
+        deg,
         gps.speed.kmph(),
         speedLimit
       );

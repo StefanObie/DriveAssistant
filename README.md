@@ -78,7 +78,7 @@ The developed solution uses minimal mobile data and is powered through a USB cab
 
 ### Possible Future Improvements
 Some possible future improvements and bug fixes are given below in descending importance:
-1. Restrict the street, district and error message to 20 characters. Change the data type from `string` to `char[20]`.
-2. Improve street match by considering drive direction. [Add the bearing parameter to the API call.](https://www.here.com/docs/bundle/geocoding-and-search-api-developer-guide/page/topics-api/code-revgeocode-track-position.html)
-3. When the GPS signal is found just before the API is called, the "No Signal Yet!" error message is not cleared. The error message is shown instead of the district.
-4. Display nothing when no district is found. Currently, the word "null" is displayed.
+- [x] Restrict the street, district and error message to 20 characters.
+- [x] Improve street match by considering drive direction. Add the [bearing parameter](https://www.here.com/docs/bundle/geocoding-and-search-api-developer-guide/page/topics-api/code-revgeocode-track-position.html) to the API call.
+- [x] When the GPS signal is found just before the API is called, the "No Signal Yet!" error message is not cleared. The error message is shown instead of the district.
+- [x] Display nothing when no district is found. Currently, the word "null" is displayed.
