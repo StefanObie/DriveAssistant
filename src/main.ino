@@ -154,11 +154,11 @@ void displayLCD() {
 
   //Street Title
   lcd.setCursor(0, 1);
-  lcd.printf("%-20s", street.c_str());
+  lcd.printf("%-.20s", street.c_str());
 
   //User feedback
   lcd.setCursor(0, 2);
-  lcd.printf("%-20s", 
+  lcd.printf("%-.20s", 
     (lcd_message == "" ? district.c_str() : lcd_message.c_str()) //Show error message, if any
   );
 
