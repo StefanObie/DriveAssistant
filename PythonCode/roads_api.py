@@ -2,7 +2,7 @@ import googlemaps
 from googlemaps.exceptions import ApiError, TransportError
 
 # Replace with your API key
-api_key = "AIzaSyA7p7Iv0Ty7zYcPEkIfUr6FqVjd3nckpC0"
+api_key = "XXXXXX"
 
 gmaps = googlemaps.Client(key=api_key)
 
