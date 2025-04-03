@@ -18,7 +18,7 @@ TinyGPSPlus gps;
 #define LCD_HIGH 19 
 #define LCD_LOW 18
 LiquidCrystal_I2C lcd(0x27, 20, 4); 
-char lcd_message[20] = "";
+const char lcd3_msg_dist[20] = "";
 
 // config.h
 const char* ssid = WIFI_SSID;
@@ -29,20 +29,19 @@ const String apiKey = HERE_API_KEY;
 unsigned long lastMillisShortTimer = 0;
 unsigned long lastMillisLongTimer = 0;
 short speedLimit = 0;
-String direction = "" ;
-String district = "" ;
-String street = "" ;
+const char *direction = NULL ;
+char lcd2_str[20] = "" ;
 // bool fallbackSpeedUsed = false;
 
 // Function to convert degrees to cardinal direction
-String getCardinalDirection(double heading) {
+const char* getCardinalDirection(double heading) {
   const char* directions[] = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
   int index = (int)((heading + 22.5) / 45.0) % 8;
-  return String(directions[index]);
+  return directions[index];
 }
 
 String constructApiUrl(double lat, double lng) {
-  const String baseUrl = "https://revgeocode.search.hereapi.com/v1/revgeocode";
+  const char baseUrl[] = "https://revgeocode.search.hereapi.com/v1/revgeocode";
 
   String params = "?at=" + String(lat, 6) + "," + String(lng, 6) + ",50" +  //at={lat},{lng},{radius=50}
                   "&maxResults=" + "1" + 
@@ -50,7 +49,7 @@ String constructApiUrl(double lat, double lng) {
                   "&showNavAttributes=" + "speedLimits" + 
                   "&types=" + "street";
 
-  Serial.printf("[DEBUG] URL: %s%s\n", baseUrl.c_str(), params.c_str());
+  Serial.printf("[DEBUG] URL: %c%s\n", baseUrl, params.c_str());
   return baseUrl + params;
 }
 
@@ -63,7 +62,7 @@ String postRequest(String url) {
 
   if (WiFi.status() != WL_CONNECTED) {
     Serial.printf("[ERROR] No wifi connection.\n");
-    lcd_message = "No WiFi Connection";
+    lcd3_msg_dist = "No WiFi Connection";
     return "";
   };
 
@@ -75,7 +74,7 @@ String postRequest(String url) {
   if (httpCode != 200) {
     http.end();
     Serial.printf("[ERROR] HTTP GET Failed: Could not fetching speed limit.\n");
-    lcd_message = "Post request failed";
+    lcd3_msg_dist = "Post request failed";
     return "";
   }
 
@@ -159,7 +158,7 @@ void displayLCD() {
   //User feedback
   lcd.setCursor(0, 2);
   lcd.printf("%-20s", 
-    (lcd_message == "" ? district.c_str() : lcd_message.c_str()) //Show error message, if any
+    (lcd3_msg_dist == "" ? district.c_str() : lcd3_msg_dist.c_str()) //Show error message, if any
   );
 
   //Date & Time, Wifi Status and Direction
@@ -168,7 +167,7 @@ void displayLCD() {
     gps.date.day(), 
     gps.date.month(), 
     (WiFi.status() == WL_CONNECTED) ? "WiFi" : "", 
-    direction.c_str(), //TODO: make time +2                                     
+    direction,
     (1 - (gps.time.minute() % 2) == 1) ? "1m" : "", 
     60 - (gps.time.second())
   );                        
@@ -270,9 +269,9 @@ void loop() {
     Serial.printf("[DEBUG] LCD cleared.\n") ;
 
     if (gps.time.isValid() && gps.date.isValid() && gps.location.isValid()) {
-      lcd_message = "" ;
+      lcd3_msg_dist = "" ;
     } else {
-      lcd_message = "No GPS Signal Yet!" ;
+      lcd3_msg_dist = "No GPS Signal Yet!" ;
       Serial.printf("[DEBUG] No GPS Signal Yet!\n") ;
     }
 

@@ -120,3 +120,56 @@ void customStrncpy(char* dest, const char* src, size_t n) {
    }
 }
 ```
+
+### Pointer to a Constant Character
+
+A pointer to a constant character means that the value being pointed to cannot be changed, but the pointer itself can be changed.
+```
+const char *ptr = "Hello";
+ptr = "World"; // Allowed
+*ptr = 'H'; // Not allowed
+```
+
+```
+// Function to convert degrees to cardinal direction
+const char* getCardinalDirection(double heading) {
+    const char* directions[] = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
+    int index = (int)((heading + 22.5) / 45.0) % 8;
+    return directions[index];
+}
+
+int main() {
+    const char* cardinalDirection;
+    cardinalDirection = getCardinalDirection(180); // Use a pointer instead of an array
+    cardinalDirection = getCardinalDirection(0);
+    printf("%s", cardinalDirection); // Use %s to print a string
+    return 0;
+}
+```
+
+### Concatenate String
+`char *strcat(char *dest, const char *src);`
+```
+#include <stdio.h> 
+#include <string.h> 
+  
+// Driver code 
+int main() 
+{ 
+    // Define a temporary variable 
+    char example[100]; 
+  
+    // Copy the first string into 
+    // the variable 
+    strcpy(example, "Geeks"); 
+  
+    // Concatenate this string 
+    // to the end of the first one 
+    strcat(example, "ForGeeks"); 
+  
+    // Display the concatenated strings 
+    printf("%s\n", example); 
+  
+    return 0; 
+}
+```
