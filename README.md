@@ -82,3 +82,4 @@ Some possible future improvements and bug fixes are given below in descending im
 - [x] Improve street match by considering drive direction. Add the [bearing parameter](https://www.here.com/docs/bundle/geocoding-and-search-api-developer-guide/page/topics-api/code-revgeocode-track-position.html) to the API call.
 - [x] When the GPS signal is found just before the API is called, the "No Signal Yet!" error message is not cleared. The error message is shown instead of the district.
 - [x] Display nothing when no district is found. Currently, the word "null" is displayed.
+- [ ] When going from a long street/district name to a shorter one, not all of the old longer text is cleared.
