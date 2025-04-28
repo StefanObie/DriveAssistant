@@ -156,7 +156,7 @@ void displayLCD() {
   //User feedback
   lcd.setCursor(0, 2);
   lcd.printf("%-.20s", 
-    (lcd_message == "" ? district.c_str() : lcd_message.c_str()) //Show error message, if any
+    (lcd_message == "" ? district.c_str() : lcd_message.c_str()) //Show error message, if any.
   );
 
   //Date & Time, Wifi Status and Direction
@@ -166,7 +166,7 @@ void displayLCD() {
     gps.date.day(), 
     gps.date.month(), 
     (WiFi.status() == WL_CONNECTED) ? "WiFi" : "", 
-    direction.c_str(),                                  
+    direction.c_str(),
     (1 - (gps.time.minute() % 2) == 1) ? "1m" : "", 
     60 - (gps.time.second())
   );                        
@@ -219,7 +219,6 @@ void loop() {
 
     // Send data just before even minutes
     if (gps.time.minute() % 2 == 1 && gps.time.second() == 50) {
-    // if (gps.time.second() % 30 == 0) {
       lcd_message = "" ;
       double lat = gps.location.lat();
       double lng = gps.location.lng();
@@ -248,6 +247,7 @@ void loop() {
       );
 
       delay(100);
+      lcd.clear();
 
       // Error Occured
       if (speedLimit == -1) { 
