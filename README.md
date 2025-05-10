@@ -75,11 +75,3 @@ $$\frac{2 500 \text{ calls}}{1 \text{ month}} \times \frac{2 \text{ min}}{1 \tex
 Waze and other similar map providers already display the current speed of the vehicle and the speed limit. However, the downside of these apps is that they consume a lot of mobile data and drain the battery quickly, as the screen needs to remain on continuously.
 
 The developed solution uses minimal mobile data and is powered through a USB cable connected to the vehicle, eliminating the need for constant screen usage and reducing battery drain.
-
-### Possible Future Improvements
-Some possible future improvements and bug fixes are given below in descending importance:
-- [x] Restrict the street, district and error message to 20 characters.
-- [x] Improve street match by considering drive direction. Add the [bearing parameter](https://www.here.com/docs/bundle/geocoding-and-search-api-developer-guide/page/topics-api/code-revgeocode-track-position.html) to the API call.
-- [x] When the GPS signal is found just before the API is called, the "No Signal Yet!" error message is not cleared. The error message is shown instead of the district.
-- [x] Display nothing when no district is found. Currently, the word "null" is displayed.
-- [X] When going from a long street/district name to a shorter one, not all of the old longer text is cleared.
