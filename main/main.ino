@@ -14,6 +14,9 @@ const uint32_t GPSBaud = 9600;
 #define GPS_HIGH 5
 TinyGPSPlus gps;
 
+// Buzzer
+#define BUZZER_PIN 2
+
 // LCD
 #define LCD_HIGH 19 
 #define LCD_LOW 18
@@ -172,6 +175,14 @@ void displayLCD() {
   );                        
 }
 
+void controlBuzzer(bool buzz) {
+  if (buzz) {
+    digitalWrite(BUZZER_PIN, HIGH);
+  } else {
+    digitalWrite(BUZZER_PIN, LOW);
+  }
+}
+
 void setup() {
   // USB Serial Communication
   Serial.begin(115200);
@@ -186,10 +197,12 @@ void setup() {
   pinMode(GPS_LOW, OUTPUT);
   pinMode(LCD_HIGH, OUTPUT);
   pinMode(LCD_LOW, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
   digitalWrite(GPS_HIGH, HIGH);
   digitalWrite(GPS_LOW, LOW);
   digitalWrite(LCD_HIGH, HIGH);
   digitalWrite(LCD_LOW, LOW);
+  digitalWrite(BUZZER_PIN, LOW);
   Serial.printf("[SETUP] Pins initialized.\n");
 
   // LCD
@@ -216,6 +229,14 @@ void loop() {
   if (gps.time.isValid() && gps.time.isUpdated() && 
       gps.date.isValid() && gps.date.isUpdated() &&
       gps.location.isValid() && gps.location.isUpdated()) {
+
+    // Check for speed limit violation and control buzzer
+    if (gps.time.minute() % 2 == 1 && gps.time.second() >= 50) {
+      bool speedViolation = (speedLimit > 0 && (gps.speed.kmph() + 10) >= speedLimit);
+      controlBuzzer(speedViolation);
+    } else {
+      controlBuzzer(false);
+    }
 
     // Send data just before even minutes
     if (gps.time.minute() % 2 == 1 && gps.time.second() == 50) {
