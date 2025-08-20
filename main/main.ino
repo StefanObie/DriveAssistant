@@ -15,7 +15,7 @@ const uint32_t GPSBaud = 9600;
 TinyGPSPlus gps;
 
 // Buzzer
-#define BUZZER_PIN 2
+#define BUZZER_PIN 4
 
 // LCD
 #define LCD_HIGH 19 
@@ -230,14 +230,6 @@ void loop() {
       gps.date.isValid() && gps.date.isUpdated() &&
       gps.location.isValid() && gps.location.isUpdated()) {
 
-    // Check for speed limit violation and control buzzer
-    if (gps.time.minute() % 2 == 1 && gps.time.second() >= 50) {
-      bool speedViolation = (speedLimit > 0 && (gps.speed.kmph() + 10) >= speedLimit);
-      controlBuzzer(speedViolation);
-    } else {
-      controlBuzzer(false);
-    }
-
     // Send data just before even minutes
     if (gps.time.minute() % 2 == 1 && gps.time.second() == 50) {
       lcd_message = "" ;
@@ -278,6 +270,14 @@ void loop() {
       }
       // Ensure the error messages are displayed for Long Timer seconds
       lastMillisLongTimer = millis(); 
+    }
+    
+    // Check for speed limit violation and control buzzer
+    if (gps.time.minute() % 2 == 1 && gps.time.second() >= 50) {
+      bool speedViolation = (speedLimit > 0 && (gps.speed.kmph() + 5) >= speedLimit);
+      controlBuzzer(speedViolation);
+    } else {
+      controlBuzzer(false);
     } 
   }
   
