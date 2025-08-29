@@ -274,7 +274,7 @@ void loop() {
     
     // Check for speed limit violation and control buzzer
     if (gps.time.minute() % 2 == 1 && gps.time.second() >= 50) {
-      bool speedViolation = (speedLimit > 0 && (gps.speed.kmph() + 5) >= speedLimit);
+      bool speedViolation = (speedLimit > 0 && gps.speed.kmph() >= speedLimit + 5);
       controlBuzzer(speedViolation);
     } else {
       controlBuzzer(false);
